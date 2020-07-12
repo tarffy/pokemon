@@ -27,23 +27,23 @@
     <QtRcc Include="Client.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="Client.ui">
-      <Filter>Resource Files</Filter>
-    </QtUic>
-    <QtMoc Include="Client.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ResourceCompile Include="$pro_name$.rc">
-    </ResourceCompile>
-    <None Include="$pro_name$.ico">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Client.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="Client.ui">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="$pro_name$.def">
-      <Filter>Resource Files</Filter>
-    </None>
-
+    </QtUic>
   </ItemGroup>
 </Project>
