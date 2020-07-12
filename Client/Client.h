@@ -14,9 +14,11 @@ public:
 private:
     Ui::ClientClass ui;
 	QTcpSocket *socket;
+public slots:
+	void send_to_socket();	//将文本框信息发给socket 肯定得改
+	void read_from_socket();//从socket读信息
 public:
 	void change_to_battle();
 	void back_to_menu();
-	void send_to_socket();
-	void read_from_socket();
+
 };

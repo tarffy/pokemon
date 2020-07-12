@@ -17,6 +17,7 @@ Client::Client(QWidget *parent)
 	connect(socket, &QTcpSocket::readyRead, this, &Client::read_from_socket);
 	connect(ui.Button1, &QPushButton::clicked,  this, &Client::change_to_battle);
 	connect(ui.Button2, &QPushButton::clicked, this, &Client::back_to_menu);
+	connect(ui.Button_disconnect, &QPushButton::clicked, socket, &QTcpSocket::disconnectFromHost);
 }
 
 void Client::change_to_battle()
@@ -32,7 +33,7 @@ void Client::back_to_menu()
 void Client::send_to_socket()
 {
 	QString str = ui.Text_send->toPlainText();
-	socket->write(str.toLocal8Bit());
+	socket->write(str.toUtf8());
 }
 
 void Client::read_from_socket()
