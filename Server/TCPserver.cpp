@@ -24,24 +24,25 @@ void TCPserver::incomingConnection(qintptr socketDescriptor)
 	tem_thread->start();
 	emit socket_init(socketDescriptor);
 	disconnect(this, &TCPserver::socket_init, socket, &TCPsocket::socket_init);
-	qDebug() << threads.count();
+	qDebug() << "New thread,threads now:"<<threads.count();
 }
 
 
 
 void TCPserver::handle_string_from_socket(const QString & str)
 {
-	qDebug() << str;
 	QStringList list = str.split("****");
 	if (list.at(0) == "disconnect") {
 		qDebug() << list.at(1);
 		qintptr tem = list.at(1).toLongLong();
 		if (threads.contains(tem) ){
-			qDebug()<<"Find descrip in hash";
 			threads.value(tem)->quit();
 			threads.remove(tem);
-			qDebug() << threads.count();
+			qDebug() <<"A thread quit,threads now:"<< threads.count();
 		}
+	}
+	else if (list.at(0) == "debug") {
+		qDebug() << "Debug from thread:" << list.at(1);
 	}
 	
 }

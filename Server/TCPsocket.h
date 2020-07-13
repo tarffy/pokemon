@@ -17,7 +17,7 @@ signals:
 public slots:
 	void socket_init(const qintptr socketDescriptor);	//初始化socket和handler对象
 	void string_to_handler();							//将socket收到的字符串发给handler 处理
-	void string_from_handler(const QString &str);		//将handler处理完的str发回给socket 
+	void string_from_handler(const QString &str,int i);		//将handler处理完的str发回给socket 
 	void tell_server_disconnected();					//将disconnected信息发给server
 private:
 	QTcpSocket *socket;				//socket

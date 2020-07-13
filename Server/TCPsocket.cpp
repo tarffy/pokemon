@@ -15,9 +15,19 @@ void TCPsocket::tell_server_disconnected()
 	emit string_to_server_ready(res);
 }
 
-void TCPsocket::string_from_handler(const QString & str)
+void TCPsocket::string_from_handler(const QString & str,int i)
 {
-	socket->write(str.toUtf8());
+	switch (i)
+	{
+	case 1:
+		socket->write(str.toUtf8());
+		break;
+	case 2:
+		QString result = QString("debug****%1").arg(str);
+		emit string_to_server_ready(result);
+		break;
+	}
+	
 }
 
 void TCPsocket::string_to_handler()
@@ -32,6 +42,7 @@ void TCPsocket::socket_init(const qintptr socketDescriptor)
 	socket = new QTcpSocket(this);
 	socket->setSocketDescriptor(socketDescriptor);
 	connect(socket, &QTcpSocket::readyRead, this, &TCPsocket::string_to_handler);
+
 	handler = new Handler(this);
 	connect(this, &TCPsocket::string_to_handler_ready, handler, &Handler::get_string_from_socket);
 	connect(handler, &Handler::string_to_socket_ready, this, &TCPsocket::string_from_handler);

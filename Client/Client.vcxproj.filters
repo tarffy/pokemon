@@ -35,9 +35,15 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Client.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Handler.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
