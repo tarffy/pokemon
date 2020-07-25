@@ -1,4 +1,4 @@
-#include "TCPsocket.h"
+﻿#include "TCPsocket.h"
 
 TCPsocket::TCPsocket(QObject *parent)
 	: QObject(parent)

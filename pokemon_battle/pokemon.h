@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "skill.h"
 #include <algorithm>
 #include <unordered_map>
@@ -11,8 +11,8 @@ class pokemon_base {
 	vector<int> levels;				//level exp_now exp_update
 	int need_update_sql,sql_id;
 	vector<int> attributes;			//HP attack defence speed critical miss
-	vector<int> attributes_z;
-	unordered_map<int, vector<int>> status;	//int id 0id 1Ê£Óà³ÖĞøÊ±¼ä 23¼¼ÄÜĞ§¹û
+	vector<int> attributes_z;		//æˆ˜æ–—æ—¶çš„status
+	unordered_map<int, vector<int>> status;	//int id 0id 1å‰©ä½™æŒç»­æ—¶é—´ 23æŠ€èƒ½æ•ˆæœ
 	vector<skill_base*> skills;
 public:
 	pokemon_base() { sql_id = -1; }

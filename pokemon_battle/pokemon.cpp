@@ -1,4 +1,4 @@
-#include "pokemon.h"
+ï»¿#include "pokemon.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -17,28 +17,29 @@ void pokemon_r::battle_with(pokemon_base * enemy)
 	vector<int> &source_atti_z = this->get_attribute_z();
 	vector<int> &enemy_atti_z = enemy->get_attribute_z();
 	int battle_continue = 1,win_flag;
-	cout << "Õ½¶·¿ªÊ¼ÁËbro\n";
+	cout << "æˆ˜æ–—å¼€å§‹äº†bro\n";
 	this->out_z_status();
 	enemy->out_z_status();
 	while (battle_continue) {
 		source_distence += source_atti_z[3];
 		enemy_distence += enemy_atti_z[3];
 		if (source_distence>=enemy_distence&& source_distence > distence) {
-			cout << "\nÎÒ·½ÐÐ¶¯ÖÐ£¡"<<endl;
+			cout << "\næˆ‘æ–¹è¡ŒåŠ¨ä¸­ï¼"<<endl;
 			source_distence -= distence;
 
 			this->use_skills(enemy);
 			int demage = source_atti_z[1] - enemy_atti_z[2];
+			demage = demage >= 0 ? demage : source_atti_z[1] * 0.1;
 			if (get_true_at_rate(source_atti_z[4])) {
 				demage+=demage/2;
-				cout << "Ôì³ÉÁË±©»÷£¡\n";
+				cout << "é€ æˆäº†æš´å‡»ï¼\n";
 			}
 			else if (get_true_at_rate(enemy_atti_z[5])) {
 				demage = 0;
-				cout << "¶Ô·½ÉÁ±ÜÁËÉËº¦£¡\n";
+				cout << "å¯¹æ–¹é—ªé¿äº†ä¼¤å®³ï¼\n";
 			}
 
-			cout << "ÎÒ·½Ôì³ÉÁË" << demage << "µãÉËº¦!\n";
+			cout << "æˆ‘æ–¹é€ æˆäº†" << demage << "ç‚¹ä¼¤å®³!\n";
 			enemy_atti_z[0] -= demage;
 
 			this->status_fresh();
@@ -53,22 +54,22 @@ void pokemon_r::battle_with(pokemon_base * enemy)
 			}
 		}
 		if (enemy_distence>=source_distence&& enemy_distence > distence) {
-			cout << "\nµÐ·½ÐÐ¶¯ÖÐ£¡"<<endl;
+			cout << "\næ•Œæ–¹è¡ŒåŠ¨ä¸­ï¼"<<endl;
 			enemy_distence -= distence;
 
 			enemy->use_skills(this);
 			int demage = enemy_atti_z[1] - source_atti_z[2];
 			if (get_true_at_rate(enemy_atti_z[4])) {
 				demage += demage / 2;
-				cout << "Ôì³ÉÁË±©»÷£¡\n";
+				cout << "é€ æˆäº†æš´å‡»ï¼\n";
 			}
 			else if (get_true_at_rate(source_atti_z[5])) {
 				demage = 0;
-				cout << "¶Ô·½ÉÁ±ÜÁËÉËº¦£¡\n";
+				cout << "å¯¹æ–¹é—ªé¿äº†ä¼¤å®³ï¼\n";
 			}
 
 			source_atti_z[0] -= demage;
-			cout << "°¡ÊÜµ½ÁË" << demage << "µãÉËº¦!\n";
+			cout << "å•Šå—åˆ°äº†" << demage << "ç‚¹ä¼¤å®³!\n";
 
 			enemy->status_fresh();
 
@@ -84,8 +85,8 @@ void pokemon_r::battle_with(pokemon_base * enemy)
 		}
 
 	}
-	if (win_flag)cout << "ÀÏµÜÕæµÄÃÍ\n";
-	else cout << "¹þ¹þ±»´ò¶ªÁË°É\n";
+	if (win_flag)cout << "è€å¼ŸçœŸçš„çŒ›\n";
+	else cout << "å“ˆå“ˆè¢«æ‰“ä¸¢äº†å§\n";
 }
 
 
@@ -94,10 +95,12 @@ void pokemon_r::battle_with(pokemon_base * enemy)
 void pokemon_base::status_fresh()
 {
 		auto& status = this->get_status();
+		vector<int> to_delete;
 		for (auto &i : status) {
-			auto it = i.second;
+			auto &it = i.second;
 			--it[1];
-			switch (it[0]) {
+			if (!it[1])to_delete.push_back(i.first);
+			switch (i.first) {
 			case 1: {
 				if (!it[1]) {
 					auto& atti_z = this->get_attribute_z();
@@ -106,13 +109,24 @@ void pokemon_base::status_fresh()
 				}
 				break;
 			}
-			case 2: {
+			case 101: {
+				if (!it[1]) {
+					break;
+				}
 				attributes_z[0] -= it[2];
-				cout << "ÒòÎªÖÐ¶¾ÊÜµ½ÁË" << it[2] << "µãÉËº¦\n";
+				cout << "å› ä¸ºä¸­æ¯’å—åˆ°äº†" << it[2] << "ç‚¹ä¼¤å®³\n";
+				break;
+			}
+			case 102: {
+				if (!it[1]) {
+					auto& atti_z = this->get_attribute_z();
+					atti_z[2] += it[2];
+				}
 				break;
 			}
 			}
 		}
+		for (auto &it : to_delete)status.erase(it);
 }
 
 bool pokemon_base::get_true_at_rate(double rate)

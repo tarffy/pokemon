@@ -1,7 +1,8 @@
-#include "skill.h"
+ï»¿#include "skill.h"
 #include "pokemon.h"
 #include <iostream>
 using std::cout;
+using std::endl;
 /*void skill_enhance::skill_use(pokemon_base * source, pokemon_base * enemy)
 {
 	skill_base *skill = source->get_skills()[0];
@@ -14,7 +15,7 @@ using std::cout;
 			break;
 		}
 		cd_now = 0;
-		cout << "Ê¹ÓÃ¼¼ÄÜ" << this->get_name() << " " << this->get_description();
+		cout << "ä½¿ç”¨æŠ€èƒ½" << this->get_name() << " " << this->get_description();
 		int attack_increase_rate = args[0];
 		int defence_increase_rate = args[1];
 		vector<int> atti = source->get_attribute();
@@ -45,7 +46,7 @@ void skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 		cout << "skill cding\n";
 		return;
 	}
-	cout << "Ê¹ÓÃ¼¼ÄÜ" << this->get_name() << " " << this->get_description();
+	cout << "ä½¿ç”¨æŠ€èƒ½" << this->get_name() << " " << this->get_description()<<endl;
 	vector<int> &source_atti = source->get_attribute();
 	vector<int> &source_atti_z = source->get_attribute_z();
 	vector<int> &enemy_atti = enemy->get_attribute();
@@ -66,10 +67,28 @@ void skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 		status_add_flag1 = 1;
 		break;
 	}
-	case 2: {
+	case 101: {
 		int demege = enemy_atti[0] * skill_args[2]*1.0/100;
 		status_args2 = vector<int>{ this->get_id(),skill_args[0],demege };
 		status_add_flag2 = 1;
+		break;
+	}
+	case 102: {
+		int defence_descease = int(1.0*skill_args[2] / 100 * enemy_atti[2]);
+		enemy_atti_z[2] -= defence_descease;
+		status_args2 = vector<int>{ this->get_id(),skill_args[0],defence_descease };
+		status_add_flag2 = 1;
+		break;
+	}
+	case 201: {
+		vector<int> to_delete;
+		for (auto &it : source_status) {
+			if (it.first >= 101 && it.first <= 200) {
+				//to_delete.push_back(it.first);
+				it.second[1] = 1;
+			}
+		}
+		//for (auto &i : to_delete)source_status.erase(i);
 		break;
 	}
 	default:

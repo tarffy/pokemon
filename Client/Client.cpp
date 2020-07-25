@@ -1,4 +1,4 @@
-#include "Client.h"
+ï»¿#include "Client.h"
 #include <qmessagebox.h>
 Client::Client(QWidget *parent)
     : QMainWindow(parent)
@@ -15,7 +15,7 @@ Client::Client(QWidget *parent)
 	}
 	else {
 		qDebug() << "TCP connect failed";
-		QMessageBox::information(this, "ÌáÊ¾", "ÎÞ·¨Á¬½Óµ½·þÎñÆ÷!");
+		QMessageBox::information(this, "æç¤º", "æ— æ³•è¿žæŽ¥åˆ°æœåŠ¡å™¨!");
 	}
 	connect(ui.Button_socket, &QPushButton::clicked, this, &Client::send_to_socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Client::read_from_socket);
@@ -23,11 +23,11 @@ Client::Client(QWidget *parent)
 	handler = new Handler();
 	connect(this, &Client::socket_to_handler_ready, handler, &Handler::handle_str_from_socket);
 	connect(handler, &Handler::register_or_login_success, [=](const QString &str) {
-		QMessageBox::information(this, "ÌáÊ¾", str);
+		QMessageBox::information(this, "æç¤º", str);
 		change_to_menu();
 	});
 	connect(handler, &Handler::register_or_login_fail, [=](const QString &str) {
-		QMessageBox::information(this, "ÌáÊ¾", str);
+		QMessageBox::information(this, "æç¤º", str);
 	});
 	connect(ui.button_login, &QPushButton::clicked, this, &Client::try_login);
 	connect(ui.button_register, &QPushButton::clicked, this, &Client::try_register);
@@ -59,12 +59,12 @@ void Client::try_login()
 {
 	QString user_name = ui.line_username->text();
 	if (user_name.length() < 6) {
-		QMessageBox::information(this, "ÌáÊ¾", "ÓÃ»§Ãû³¤¶ÈÓ¦ÖÁÉÙÁùÎ»£¬ÇëÖØÐÂÊäÈë¡£");
+		QMessageBox::information(this, "æç¤º", "ç”¨æˆ·åé•¿åº¦åº”è‡³å°‘å…­ä½ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	QString password = ui.line_password->text();
 	if (password.length() < 6) {
-		QMessageBox::information(this, "ÌáÊ¾", "ÃÜÂë³¤¶ÈÓ¦ÖÁÉÙÁùÎ»£¬ÇëÖØÐÂÊäÈë¡£");
+		QMessageBox::information(this, "æç¤º", "å¯†ç é•¿åº¦åº”è‡³å°‘å…­ä½ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	QString res = QString("login****%1****%2").arg(user_name).arg(password);
@@ -75,12 +75,12 @@ void Client::try_register()
 {
 	QString user_name = ui.line_username->text();
 	if (user_name.length() < 6) {
-		QMessageBox::information(this, "ÌáÊ¾", "ÓÃ»§Ãû³¤¶ÈÓ¦ÖÁÉÙÁùÎ»£¬ÇëÖØÐÂÊäÈë¡£");
+		QMessageBox::information(this, "æç¤º", "ç”¨æˆ·åé•¿åº¦åº”è‡³å°‘å…­ä½ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	QString password = ui.line_password->text();
 	if (password.length() < 6) {
-		QMessageBox::information(this, "ÌáÊ¾", "ÃÜÂë³¤¶ÈÓ¦ÖÁÉÙÁùÎ»£¬ÇëÖØÐÂÊäÈë¡£");
+		QMessageBox::information(this, "æç¤º", "å¯†ç é•¿åº¦åº”è‡³å°‘å…­ä½ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚");
 		return;
 	}
 	QString res = QString("register****%1****%2").arg(user_name).arg(password);

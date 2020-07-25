@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 using std::string;
@@ -7,9 +7,9 @@ class pokemon_base;
 class skill_base {
 	string skill_name;
 	string skill_decription;
-	int skill_used = 0, cd_now;
+	int skill_used = 0, cd_now;		//å½“cd_nowç­‰äºå†·å´æ—¶é—´æ—¶æŠ€èƒ½å¯ä»¥ä½¿ç”¨
 	int skill_id;
-	vector<int> skill_args;		//³ÖĞøÊ±¼ä	ÀäÈ´Ê±¼ä ¼¼ÄÜ²ÎÊı
+	vector<int> skill_args;		//æŒç»­æ—¶é—´	å†·å´æ—¶é—´ æŠ€èƒ½å‚æ•°
 public:
 	skill_base() { skill_id = -1; }
 	skill_base(const string &name, const string &descrip, int id, const vector<int> &args) 
@@ -30,7 +30,7 @@ class skill_enhance :public skill_base {
 public:
 	skill_enhance(const string &name, const string &descrip, int id, const vector<int> &args)
 		:skill_base(name, descrip, id, args) {
-		skill_cd =cd_now= 4;//Òª¸Ä
+		skill_cd =cd_now= 4;//è¦æ”¹
 	};
 	virtual void skill_use(pokemon_base *source, pokemon_base *enemy);
 

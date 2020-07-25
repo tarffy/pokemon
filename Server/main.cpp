@@ -1,4 +1,4 @@
-#include <QtCore/QCoreApplication>
+﻿#include <QtCore/QCoreApplication>
 #include "TCPserver.h"
 int main(int argc, char *argv[])
 {

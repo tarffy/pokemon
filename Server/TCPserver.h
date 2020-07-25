@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <qtcpserver.h>
 #include <qthread.h>
@@ -12,12 +12,12 @@ class TCPserver : public QTcpServer
 public:
 	TCPserver(QObject *parent=NULL);
 	~TCPserver();
-	void incomingConnection(qintptr socketDescriptor);	//ÖØĞ´QTcpServerº¯Êı µ±ÓĞĞÂÁ¬½ÓÊÇ»á±»µ÷ÓÃ
+	void incomingConnection(qintptr socketDescriptor);	//é‡å†™QTcpServerå‡½æ•° å½“æœ‰æ–°è¿æ¥æ˜¯ä¼šè¢«è°ƒç”¨
 
 public slots:
-	void handle_string_from_socket(const QString &str);		//´¦Àísocket´«¸øserverµÄstr Ä¿Ç°¹¦ÄÜÓĞ disconnectÊ±É¾³ıhash Êä³ösocket´«¸øserverµÄdebugĞÅÏ¢
+	void handle_string_from_socket(const QString &str);		//å¤„ç†socketä¼ ç»™serverçš„str ç›®å‰åŠŸèƒ½æœ‰ disconnectæ—¶åˆ é™¤hash è¾“å‡ºsocketä¼ ç»™serverçš„debugä¿¡æ¯
 signals:
-	void socket_init(const qintptr socketDescriptor);		//ÓÃÓÚ½«ĞÂ½¨µÄTCPsocketÒÆ¶¯µ½ĞÂÏß³Ìºó ÔÚĞÂÏß³Ì³õÊ¼»¯³ÉÔ±
+	void socket_init(const qintptr socketDescriptor);		//ç”¨äºå°†æ–°å»ºçš„TCPsocketç§»åŠ¨åˆ°æ–°çº¿ç¨‹å åœ¨æ–°çº¿ç¨‹åˆå§‹åŒ–æˆå‘˜
 private:
-	QHash<qintptr, QThread*> threads;			//Hash±í ´æ´¢Ã¿¸ösocketÁ´½ÓÊ¹ÓÃµÄQThreadÖ¸Õë
+	QHash<qintptr, QThread*> threads;			//Hashè¡¨ å­˜å‚¨æ¯ä¸ªsocketé“¾æ¥ä½¿ç”¨çš„QThreadæŒ‡é’ˆ
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QObject>
 #include "jdbc/mysql_connection.h"
@@ -12,13 +12,13 @@ public:
 	Handler(QObject *parent=NULL);
 	~Handler();
 private:
-	sql::mysql::MySQL_Driver *driver;		//mysqlÇı¶¯
-	sql::Connection *con;					//Á¬½Ó
-	sql::Statement *stmt;					//Óï¾ä
-	sql::ResultSet *res;					//½á¹û¼¯
+	sql::mysql::MySQL_Driver *driver;		//mysqlé©±åŠ¨
+	sql::Connection *con;					//è¿æ¥
+	sql::Statement *stmt;					//è¯­å¥
+	sql::ResultSet *res;					//ç»“æœé›†
 public slots:
-	//½«socket´«¸øhandlerµÄstr½øĞĞ´¦Àí ´¦Àíºó´¥·¢string_to_socket_readyĞÅºÅ
+	//å°†socketä¼ ç»™handlerçš„strè¿›è¡Œå¤„ç† å¤„ç†åè§¦å‘string_to_socket_readyä¿¡å·
 	void get_string_from_socket(const QString &str);	
 signals:
-	void string_to_socket_ready(const QString &str,int i);		//½«string·¢¸øsocket iÎª1·¢¸øpeer socket Îª2·¢¸øserver debug
+	void string_to_socket_ready(const QString &str,int i);		//å°†stringå‘ç»™socket iä¸º1å‘ç»™peer socket ä¸º2å‘ç»™server debug
 };

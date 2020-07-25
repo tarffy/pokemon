@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma execution_character_set("utf-8")
 #include <QtWidgets/QMainWindow>
 #include "ui_Client.h"
@@ -19,12 +19,12 @@ private:
 public:
 
 signals:
-	void socket_to_handler_ready(const QString &str);	//ĞÅºÅ¼¤»îºó½«socket¶Áµ½µÄĞÅÏ¢·¢¸øhandler´¦Àí
+	void socket_to_handler_ready(const QString &str);	//ä¿¡å·æ¿€æ´»åå°†socketè¯»åˆ°çš„ä¿¡æ¯å‘ç»™handlerå¤„ç†
 public slots:
-	void send_to_socket();	//½«ÎÄ±¾¿òĞÅÏ¢·¢¸øsocket ¿Ï¶¨µÃ¸Ä
-	void read_from_socket();//´Ósocket¶ÁĞÅÏ¢
-	void try_login();			//³¢ÊÔµÇÂ¼
-	void try_register();		//³¢ÊÔ×¢²á
+	void send_to_socket();	//å°†æ–‡æœ¬æ¡†ä¿¡æ¯å‘ç»™socket è‚¯å®šå¾—æ”¹
+	void read_from_socket();//ä»socketè¯»ä¿¡æ¯
+	void try_login();			//å°è¯•ç™»å½•
+	void try_register();		//å°è¯•æ³¨å†Œ
 	void change_to_battle();
 	void change_to_menu();
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QObject>
 #include <qtcpsocket.h>
@@ -12,15 +12,15 @@ public:
 	~TCPsocket();
 	
 signals:
-	void string_to_handler_ready(const QString &str);	//socket readÍêºó½«str·¢¸øhandler´¦Àí
-	void string_to_server_ready(const QString &str);	//socket ½«str·¢¸øserver Ä¿Ç°ÓÃÀ´disconnect
+	void string_to_handler_ready(const QString &str);	//socket readå®Œåå°†strå‘ç»™handlerå¤„ç†
+	void string_to_server_ready(const QString &str);	//socket å°†strå‘ç»™server ç›®å‰ç”¨æ¥disconnect
 public slots:
-	void socket_init(const qintptr socketDescriptor);	//³õÊ¼»¯socketºÍhandler¶ÔÏó
-	void string_to_handler();							//½«socketÊÕµ½µÄ×Ö·û´®·¢¸øhandler ´¦Àí
-	void string_from_handler(const QString &str,int i);		//½«handler´¦ÀíÍêµÄstr·¢»Ø¸øsocket 
-	void tell_server_disconnected();					//½«disconnectedĞÅÏ¢·¢¸øserver
+	void socket_init(const qintptr socketDescriptor);	//åˆå§‹åŒ–socketå’Œhandlerå¯¹è±¡
+	void string_to_handler();							//å°†socketæ”¶åˆ°çš„å­—ç¬¦ä¸²å‘ç»™handler å¤„ç†
+	void string_from_handler(const QString &str,int i);		//å°†handlerå¤„ç†å®Œçš„strå‘å›ç»™socket 
+	void tell_server_disconnected();					//å°†disconnectedä¿¡æ¯å‘ç»™server
 private:
 	QTcpSocket *socket;				//socket
-	Handler *handler;				//´¦ÀíĞÅÏ¢µÄhandler
-	qintptr socketdescriptor;		//´¢´æµ±Ç°socketµÄdescriptor
+	Handler *handler;				//å¤„ç†ä¿¡æ¯çš„handler
+	qintptr socketdescriptor;		//å‚¨å­˜å½“å‰socketçš„descriptor
 };

@@ -1,4 +1,4 @@
-#include "Handler.h"
+ï»¿#include "Handler.h"
 #include <string>
 using std::string;
 Handler::Handler(QObject *parent)
@@ -27,8 +27,8 @@ void Handler::get_string_from_socket(const QString & str)
 	QStringList list = str.split("****");
 	QString mode = list.at(0);
 	if (mode == "login") {
-		if (list.at(1).length() < 6 || list.at(2).length() < 6) {	//ÈßÓàÉèÖÃ
-			emit string_to_socket_ready(QString("login****fail****ÓÃ»§Ãû»òÃÜÂë³¤¶È²»×ã6Î»£¬ÇëÖØĞÂÊäÈë¡£"), 1);
+		if (list.at(1).length() < 6 || list.at(2).length() < 6) {	//å†—ä½™è®¾ç½®
+			emit string_to_socket_ready(QString("login****fail****ç”¨æˆ·åæˆ–å¯†ç é•¿åº¦ä¸è¶³6ä½ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚"), 1);
 			return;
 		}
 		res = stmt->executeQuery(QString("select * from users where user_name='%1'\0").arg(list.at(1)).toUtf8().data());
@@ -36,33 +36,33 @@ void Handler::get_string_from_socket(const QString & str)
 			QString password = res->getString("password").c_str();
 			if (password == list.at(2)) {
 				emit string_to_socket_ready(QString("user %1 login success").arg(list.at(1)), 2);
-				emit string_to_socket_ready(QString("login****success****µÇÂ¼³É¹¦"), 1);
+				emit string_to_socket_ready(QString("login****success****ç™»å½•æˆåŠŸ"), 1);
 			}
 			else {
 				emit string_to_socket_ready("login failed wrong password", 2);
-				emit string_to_socket_ready(QString("login****fail****ÃÜÂë´íÎó£¬Çë¼ì²éºóÖØĞÂµÇÂ¼¡£").arg(list.at(1)), 1);
+				emit string_to_socket_ready(QString("login****fail****å¯†ç é”™è¯¯ï¼Œè¯·æ£€æŸ¥åé‡æ–°ç™»å½•ã€‚"), 1);
 			}
 		}
 		else {
 			emit string_to_socket_ready("login failed", 2);
-			emit string_to_socket_ready(QString("login****fail****ÓÃ»§Ãû%1Î´±»×¢²á£¬ÇëÏÈ×¢²áÓÃ»§¡£").arg(list.at(1)), 1);
+			emit string_to_socket_ready(QString("login****fail****ç”¨æˆ·å%1æœªè¢«æ³¨å†Œï¼Œè¯·å…ˆæ³¨å†Œç”¨æˆ·ã€‚").arg(list.at(1)), 1);
 		}
 
 	}
 	else if (mode == "register") {
-		if (list.at(1).length() < 6 || list.at(2).length() < 6) {	//ÈßÓàÉèÖÃ
-			emit string_to_socket_ready(QString("register****fail****ÓÃ»§Ãû»òÃÜÂë³¤¶È²»×ã6Î»£¬ÇëÖØĞÂÊäÈë¡£"), 1);
+		if (list.at(1).length() < 6 || list.at(2).length() < 6) {	//å†—ä½™è®¾ç½®
+			emit string_to_socket_ready(QString("register****fail****ç”¨æˆ·åæˆ–å¯†ç é•¿åº¦ä¸è¶³6ä½ï¼Œè¯·é‡æ–°è¾“å…¥ã€‚"), 1);
 			return;
 		}
 		res = stmt->executeQuery(QString("select * from users where user_name='%1'\0").arg(list.at(1)).toUtf8().data());
 		if (res->next()) {
 			emit string_to_socket_ready("register failed",2);
-			emit string_to_socket_ready(QString("register****fail****ÓÃ»§Ãû%1ÒÑ±»×¢²á£¬Çë»»ÓÃ»§ÃûÖØĞÂ×¢²á¡£").arg(list.at(1)), 1);
+			emit string_to_socket_ready(QString("register****fail****ç”¨æˆ·å%1å·²è¢«æ³¨å†Œï¼Œè¯·æ¢ç”¨æˆ·åé‡æ–°æ³¨å†Œã€‚").arg(list.at(1)), 1);
 		}
 		else {
 			stmt->executeUpdate(QString("insert into users (user_name,password) values ('%1','%2')").arg(list.at(1)).arg(list.at(2)).toUtf8().data());
 			emit string_to_socket_ready(QString("user %1 register success").arg(list.at(1)), 2);
-			emit string_to_socket_ready(QString("register****success****¹§Ï²Äú×¢²á³É¹¦"),1);
+			emit string_to_socket_ready(QString("register****success****æ­å–œæ‚¨æ³¨å†ŒæˆåŠŸ"),1);
 		}
 	}
 

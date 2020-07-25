@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QObject>
 
@@ -11,8 +11,8 @@ public:
 	~Handler();
 	
 public slots:
-	void handle_str_from_socket(const QString &str);		//´¦Àísocket¶Áµ½µÄstring
+	void handle_str_from_socket(const QString &str);		//å¤„ç†socketè¯»åˆ°çš„string
 signals:
-	void register_or_login_success(const QString &str);		//ÊÕµ½·şÎñ¶Ë ×¢²á»òµÇÂ¼³É¹¦Ê±¼¤»î
-	void register_or_login_fail(const QString &str);		//Ê§°ÜÊ±¼¤»î
+	void register_or_login_success(const QString &str);		//æ”¶åˆ°æœåŠ¡ç«¯ æ³¨å†Œæˆ–ç™»å½•æˆåŠŸæ—¶æ¿€æ´»
+	void register_or_login_fail(const QString &str);		//å¤±è´¥æ—¶æ¿€æ´»
 };

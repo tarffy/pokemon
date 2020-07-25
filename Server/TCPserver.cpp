@@ -1,4 +1,4 @@
-#include "TCPserver.h"
+﻿#include "TCPserver.h"
 #include <qmetatype.h>
 TCPserver::TCPserver(QObject *parent)
 	: QTcpServer(parent)

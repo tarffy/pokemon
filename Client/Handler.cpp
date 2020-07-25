@@ -1,4 +1,4 @@
-#include "Handler.h"
+﻿#include "Handler.h"
 #include <qdebug.h>
 Handler::Handler(QObject *parent)
 	: QObject(parent)
