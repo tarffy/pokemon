@@ -38,13 +38,13 @@ using std::endl;
 	}
 }*/
 
-void skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
+int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 {
 	skill_base *skill = source->get_skills()[0];
 	vector<int> &skill_args = this->get_args();
 	if (is_skill_cd()) {
 		cout << "skill cding\n";
-		return;
+		return 0;
 	}
 	cout << "使用技能" << this->get_name() << " " << this->get_description()<<endl;
 	vector<int> &source_atti = source->get_attribute();
@@ -68,7 +68,7 @@ void skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 		break;
 	}
 	case 101: {
-		int demege = enemy_atti[0] * skill_args[2]*1.0/100;
+		int demege = int(1.0* enemy_atti[0] * skill_args[2]/100);
 		status_args2 = vector<int>{ this->get_id(),skill_args[0],demege };
 		status_add_flag2 = 1;
 		break;
@@ -97,6 +97,7 @@ void skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 
 	if (status_add_flag1)source_status[this->get_id()] = status_args1;
 	if (status_add_flag2)enemy_status[this->get_id()] = status_args2;
+	return 1;
 }
 
 inline bool skill_base::is_skill_cd()

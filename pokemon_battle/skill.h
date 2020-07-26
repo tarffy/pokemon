@@ -16,9 +16,9 @@ public:
 		:skill_name(name), skill_decription(descrip), skill_id(id),skill_args(args){
 		cd_now=skill_args[1];
 	}
-	virtual void skill_use(pokemon_base *source, pokemon_base *enemy) ;
+	int skill_use(pokemon_base *source, pokemon_base *enemy) ;
 	
-	virtual int get_id() const { return skill_id; }
+	int get_id() const { return skill_id; }
 	vector<int>& get_args() { return skill_args; }
 	string get_name() const{ return skill_name; }
 	string get_description() const { return skill_decription; }
