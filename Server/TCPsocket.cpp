@@ -48,4 +48,5 @@ void TCPsocket::socket_init(const qintptr socketDescriptor)
 	connect(handler, &Handler::string_to_socket_ready, this, &TCPsocket::string_from_handler);
 	socketdescriptor = socketDescriptor;
 	connect(socket, &QTcpSocket::disconnected, this, &TCPsocket::tell_server_disconnected);
+	connect(socket, &QTcpSocket::disconnected,  handler,&Handler::user_disconnect);
 }

@@ -21,5 +21,8 @@ void Handler::handle_str_from_socket(const QString & str)
 			emit register_or_login_fail(list.at(2));
 		}
 	}
+	else if (mode == "query_player") {
+		emit query_success(list.at(1));
+	}
 	
 }

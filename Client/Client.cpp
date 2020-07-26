@@ -9,7 +9,7 @@ Client::Client(QWidget *parent)
 
 
 	socket = new QTcpSocket(this);
-	socket->connectToHost(QHostAddress::LocalHost, 8888);
+	socket->connectToHost("QHostAddress::LocalHost", 8888);//"188.131.139.250" QHostAddress::LocalHost
 	if (socket->waitForConnected()) {
 		qDebug()<< "TCP connected";
 	}
@@ -29,24 +29,51 @@ Client::Client(QWidget *parent)
 	connect(handler, &Handler::register_or_login_fail, [=](const QString &str) {
 		QMessageBox::information(this, "提示", str);
 	});
+	connect(ui.Button_disconnect, &QPushButton::clicked, socket, &QTcpSocket::disconnectFromHost);
+	//登录页
 	connect(ui.button_login, &QPushButton::clicked, this, &Client::try_login);
 	connect(ui.button_register, &QPushButton::clicked, this, &Client::try_register);
+	//菜单页
+	connect(ui.Button_logout, &QPushButton::clicked, this, &QWidget::close);
+	//战斗页
+	connect(ui.Button_enter_battle, &QPushButton::clicked,  this, &Client::change_to_battle);
+	connect(ui.Button_return_menu1, &QPushButton::clicked, this, &Client::change_to_menu);
 
-	connect(ui.Button1, &QPushButton::clicked,  this, &Client::change_to_battle);
-	connect(ui.Button2, &QPushButton::clicked, this, &Client::change_to_menu);
-	connect(ui.Button_disconnect, &QPushButton::clicked, socket, &QTcpSocket::disconnectFromHost);
-
-
+	
+	//查询页
+	connect(ui.Button_query, &QPushButton::clicked, this, &Client::change_to_query);
+	connect(ui.Button_return_menu2, &QPushButton::clicked, this, &Client::change_to_menu);
+	connect(ui.Button_fresh_online_player, &QPushButton::clicked, this, &Client::try_query_player_online);
+	connect(handler, &Handler::query_success, this, &Client::show_query_player_result);
 }
 
 void Client::change_to_battle()
 {
-	ui.Swidgt->setCurrentIndex(1);
+	ui.Swidgt->setCurrentIndex(2);
 }
 
 void Client::change_to_menu()
 {
-	ui.Swidgt->setCurrentIndex(0);
+	ui.Swidgt->setCurrentIndex(1);
+}
+
+void Client::change_to_query()
+{
+	ui.Swidgt->setCurrentIndex(3);
+	try_query_player_online();
+}
+
+void Client::try_query_player_online()
+{
+	QString res = "query_player";
+	socket->write(res.toUtf8());
+}
+
+void Client::show_query_player_result(const QString & str)
+{
+	ui.list_player_online->clear();
+	QStringList list= str.split("###");
+	ui.list_player_online->addItems(list);
 }
 
 void Client::send_to_socket()

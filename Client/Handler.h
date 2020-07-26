@@ -15,4 +15,5 @@ public slots:
 signals:
 	void register_or_login_success(const QString &str);		//收到服务端 注册或登录成功时激活
 	void register_or_login_fail(const QString &str);		//失败时激活
+	void query_success(const QString &str);
 };

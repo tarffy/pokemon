@@ -22,6 +22,11 @@ Handler::~Handler()
 {
 }
 
+void Handler::user_disconnect()
+{
+	stmt->executeUpdate(QString("update users set online=0 where user_name='%1' ").arg(user_name).toUtf8().data());
+}
+
 void Handler::get_string_from_socket(const QString & str)
 {
 	QStringList list = str.split("****");
@@ -35,6 +40,8 @@ void Handler::get_string_from_socket(const QString & str)
 		if (res->next()) {
 			QString password = res->getString("password").c_str();
 			if (password == list.at(2)) {
+				user_name = list.at(1);
+				stmt->executeUpdate(QString("update users set online=1 where user_name=\"%1\" ").arg(list.at(1)).toUtf8().data());
 				emit string_to_socket_ready(QString("user %1 login success").arg(list.at(1)), 2);
 				emit string_to_socket_ready(QString("login****success****登录成功"), 1);
 			}
@@ -60,10 +67,24 @@ void Handler::get_string_from_socket(const QString & str)
 			emit string_to_socket_ready(QString("register****fail****用户名%1已被注册，请换用户名重新注册。").arg(list.at(1)), 1);
 		}
 		else {
-			stmt->executeUpdate(QString("insert into users (user_name,password) values ('%1','%2')").arg(list.at(1)).arg(list.at(2)).toUtf8().data());
+			stmt->executeUpdate(QString("insert into users (user_name,password,online) values ('%1','%2',1)").arg(list.at(1)).arg(list.at(2)).toUtf8().data());
+			user_name = list.at(1);
 			emit string_to_socket_ready(QString("user %1 register success").arg(list.at(1)), 2);
 			emit string_to_socket_ready(QString("register****success****恭喜您注册成功"),1);
 		}
+	}
+	else if (mode == "query_player") {
+		res = stmt->executeQuery("select * from users where online=1\0");
+		QString res_str="query_player****";
+		int count = 0;
+		while (res->next()) {
+			if (count)res_str.append("###");
+			++count;
+			res_str.append(res->getString("user_name").c_str());
+		}
+		if (count == 0)res_str.append("目前无用户在线");
+		emit string_to_socket_ready(QString("user %1 query player success").arg(user_name), 2); 
+		emit string_to_socket_ready(res_str, 1);
 	}
 
 

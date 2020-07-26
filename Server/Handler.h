@@ -12,6 +12,7 @@ public:
 	Handler(QObject *parent=NULL);
 	~Handler();
 private:
+	QString user_name;
 	sql::mysql::MySQL_Driver *driver;		//mysql驱动
 	sql::Connection *con;					//连接
 	sql::Statement *stmt;					//语句
@@ -19,6 +20,7 @@ private:
 public slots:
 	//将socket传给handler的str进行处理 处理后触发string_to_socket_ready信号
 	void get_string_from_socket(const QString &str);	
+	void user_disconnect();
 signals:
 	void string_to_socket_ready(const QString &str,int i);		//将string发给socket i为1发给peer socket 为2发给server debug
 };

@@ -27,5 +27,7 @@ public slots:
 	void try_register();		//尝试注册
 	void change_to_battle();
 	void change_to_menu();
-
+	void change_to_query();
+	void try_query_player_online();
+	void show_query_player_result(const QString &str);
 };
