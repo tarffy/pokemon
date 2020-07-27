@@ -98,6 +98,9 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Handler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="pokemon.cpp" />
+    <ClCompile Include="skill.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Client.h" />
@@ -107,6 +110,11 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Handler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="pokemon.h" />
+    <ClInclude Include="skill.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

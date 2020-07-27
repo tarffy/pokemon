@@ -161,7 +161,7 @@ void pokemon_base::battle_with(pokemon_base * enemy)
 
 	this->get_exp(win_flag ? 150 : 50);
 	enemy->get_exp(win_flag ? 50 : 150);
-	cout << repo<<repo.size();
+	//cout << repo<<repo.size();
 }
 
 string pokemon_base::attack_turn(pokemon_base * enemy)
@@ -280,4 +280,14 @@ void pokemon_base::set_skill(int cur, int id, string name, string descrip, vecto
 {
 	skill_base *skill_set = new skill_base(name,descrip , id, skill_args);
 	this->get_skills()[cur] = skill_set;
+}
+
+string pokemon_base::out_pokemon_info()
+{
+	string dot = ",";
+	string res = pokemon_name + dot + to_string(this->get_rarity())+dot;
+	for (int i = 0; i < 8; i++)res.append(to_string(attributes[i] )+dot);
+	for (int i = 0; i < 3; i++)res.append(to_string(levels[i]) + dot);
+	
+	return res;
 }

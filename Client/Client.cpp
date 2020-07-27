@@ -9,7 +9,7 @@ Client::Client(QWidget *parent)
 
 
 	socket = new QTcpSocket(this);
-	socket->connectToHost("QHostAddress::LocalHost", 8888);//"188.131.139.250" QHostAddress::LocalHost
+	socket->connectToHost(QHostAddress::LocalHost, 8888);//"188.131.139.250" QHostAddress::LocalHost
 	if (socket->waitForConnected()) {
 		qDebug()<< "TCP connected";
 	}
@@ -29,6 +29,9 @@ Client::Client(QWidget *parent)
 	connect(handler, &Handler::register_or_login_fail, [=](const QString &str) {
 		QMessageBox::information(this, "提示", str);
 	});
+	connect(handler,&Handler::socket_information, [=](const QString &str) {
+		QMessageBox::information(this, "提示", str);
+	});
 	connect(ui.Button_disconnect, &QPushButton::clicked, socket, &QTcpSocket::disconnectFromHost);
 	//登录页
 	connect(ui.button_login, &QPushButton::clicked, this, &Client::try_login);
@@ -45,6 +48,11 @@ Client::Client(QWidget *parent)
 	connect(ui.Button_return_menu2, &QPushButton::clicked, this, &Client::change_to_menu);
 	connect(ui.Button_fresh_online_player, &QPushButton::clicked, this, &Client::try_query_player_online);
 	connect(handler, &Handler::query_success, this, &Client::show_query_player_result);
+
+	//精灵页
+	connect(ui.Button_pokemons, &QPushButton::clicked, this, &Client::change_to_pokemon);
+	connect(ui.Button_return_menu3, &QPushButton::clicked, this, &Client::change_to_menu);
+	connect(handler, &Handler::pokemon_info_ready, this, &Client::show_pokemon_info);
 }
 
 void Client::change_to_battle()
@@ -76,6 +84,26 @@ void Client::show_query_player_result(const QString & str)
 	ui.list_player_online->addItems(list);
 }
 
+void Client::change_to_pokemon()
+{
+	ui.Swidgt->setCurrentIndex(4);
+	try_query_pokemon_info();
+}
+
+void Client::show_pokemon_info(const QString &str)
+{
+	//采用###分割bag和store 采用&&分割不同精灵
+	QStringList list = str.split("###");
+	ui.list_pokemon_bag->clear();
+	ui.list_pokemon_store->clear();
+	if (list.at(0) != "-1") {
+		ui.list_pokemon_bag->addItems(list.at(0).split("$$"));
+	}
+	if (list.at(1) != "-1") {
+		ui.list_pokemon_store->addItems(list.at(1).split("$$"));
+	}
+}
+
 void Client::send_to_socket()
 {
 	QString str = ui.Text_send->toPlainText();
@@ -94,6 +122,7 @@ void Client::try_login()
 		QMessageBox::information(this, "提示", "密码长度应至少六位，请重新输入。");
 		return;
 	}
+	handler->player.set_user_name(user_name.toStdString());
 	QString res = QString("login****%1****%2").arg(user_name).arg(password);
 	socket->write(res.toUtf8());
 }
@@ -110,7 +139,14 @@ void Client::try_register()
 		QMessageBox::information(this, "提示", "密码长度应至少六位，请重新输入。");
 		return;
 	}
+	handler->player.set_user_name(user_name.toStdString());
 	QString res = QString("register****%1****%2").arg(user_name).arg(password);
+	socket->write(res.toUtf8());
+}
+
+void Client::try_query_pokemon_info()
+{
+	QString res = "query_pokemon";
 	socket->write(res.toUtf8());
 }
 

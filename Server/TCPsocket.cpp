@@ -20,7 +20,7 @@ void TCPsocket::string_from_handler(const QString & str,int i)
 	switch (i)
 	{
 	case 1:
-		socket->write(str.toUtf8());
+		socket->write((str+QString("^()")).toUtf8());
 		break;
 	case 2:
 		QString result = QString("debug****%1").arg(str);

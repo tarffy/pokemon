@@ -17,7 +17,7 @@ private:
 	QTcpSocket *socket;
 	Handler *handler;
 public:
-
+	void try_query_pokemon_info();
 signals:
 	void socket_to_handler_ready(const QString &str);	//信号激活后将socket读到的信息发给handler处理
 public slots:
@@ -25,9 +25,11 @@ public slots:
 	void read_from_socket();//从socket读信息
 	void try_login();			//尝试登录
 	void try_register();		//尝试注册
-	void change_to_battle();
-	void change_to_menu();
-	void change_to_query();
-	void try_query_player_online();
-	void show_query_player_result(const QString &str);
+	void change_to_battle();	//切换到战斗界面
+	void change_to_menu();		//切换到菜单界面
+	void change_to_query();		//切换到查询界面
+	void change_to_pokemon();	//切换到精灵界面
+	void try_query_player_online();	//查询在线的玩家
+	void show_query_player_result(const QString &str);	//根据查询结果 显示在线的玩家
+	void show_pokemon_info(const QString &str);		//根据返回结果显示背包和仓库内的精灵
 };

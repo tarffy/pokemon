@@ -233,8 +233,8 @@
        <widget class="QPushButton" name="Button_enter_battle">
         <property name="geometry">
          <rect>
-          <x>620</x>
-          <y>80</y>
+          <x>610</x>
+          <y>40</y>
           <width>241</width>
           <height>91</height>
          </rect>
@@ -246,8 +246,8 @@
        <widget class="QPushButton" name="Button_query">
         <property name="geometry">
          <rect>
-          <x>630</x>
-          <y>230</y>
+          <x>620</x>
+          <y>170</y>
           <width>211</width>
           <height>71</height>
          </rect>
@@ -267,6 +267,19 @@
         </property>
         <property name="text">
          <string>退出</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="Button_pokemons">
+        <property name="geometry">
+         <rect>
+          <x>620</x>
+          <y>290</y>
+          <width>211</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>查看背包、仓库精灵</string>
         </property>
        </widget>
       </widget>
@@ -354,6 +367,83 @@
         </property>
         <property name="text">
          <string>刷新</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_pokemons">
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>70</y>
+          <width>251</width>
+          <height>431</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>背包</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QListWidget" name="list_pokemon_bag"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="Button_pokemon_to_store">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>110</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>将精灵放到仓库-&gt;</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="Button_pokemon_to_bag">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>150</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;-将精灵放到背包</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="geometry">
+         <rect>
+          <x>620</x>
+          <y>80</y>
+          <width>251</width>
+          <height>431</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>仓库</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QListWidget" name="list_pokemon_store"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="Button_return_menu3">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>20</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>返回菜单</string>
         </property>
        </widget>
       </widget>
