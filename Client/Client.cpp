@@ -22,10 +22,7 @@ Client::Client(QWidget *parent)
 
 	handler = new Handler();
 	connect(this, &Client::socket_to_handler_ready, handler, &Handler::handle_str_from_socket);
-	connect(handler, &Handler::register_or_login_success, [=](const QString &str) {
-		QMessageBox::information(this, "提示", str);
-		change_to_menu();
-	});
+	connect(handler, &Handler::register_or_login_success, this,&Client::register_or_login_success_slot);
 	connect(handler, &Handler::register_or_login_fail, [=](const QString &str) {
 		QMessageBox::information(this, "提示", str);
 	});
@@ -48,11 +45,19 @@ Client::Client(QWidget *parent)
 	connect(ui.Button_return_menu2, &QPushButton::clicked, this, &Client::change_to_menu);
 	connect(ui.Button_fresh_online_player, &QPushButton::clicked, this, &Client::try_query_player_online);
 	connect(handler, &Handler::query_success, this, &Client::show_query_player_result);
-
+	connect(ui.Button_query_player_pokemon, &QPushButton::clicked, this, &Client::try_query_player_pokemon);
+	connect(handler, &Handler::player_pokemon_ready, this, &Client::show_query_player_pokemon);
 	//精灵页
 	connect(ui.Button_pokemons, &QPushButton::clicked, this, &Client::change_to_pokemon);
 	connect(ui.Button_return_menu3, &QPushButton::clicked, this, &Client::change_to_menu);
+	connect(ui.Button_return_menu3, &QPushButton::clicked, this, &Client::try_fresh_pokemon);
 	connect(handler, &Handler::pokemon_info_ready, this, &Client::show_pokemon_info);
+	connect(ui.Button_pokemon_to_store, &QPushButton::clicked, this, &Client::put_pokemon_to_store);
+	connect(ui.Button_pokemon_to_bag, &QPushButton::clicked, this, &Client::put_pokemon_to_bag);
+	//抽奖页
+	connect(ui.Button_gacha, &QPushButton::clicked, this, &Client::change_to_gacha);
+	connect(ui.Button_return_menu4, &QPushButton::clicked, this, &Client::change_to_menu);
+	connect(ui.Button_gacha1_1, &QPushButton::clicked, this, &Client::try_gacha);
 }
 
 void Client::change_to_battle()
@@ -87,7 +92,15 @@ void Client::show_query_player_result(const QString & str)
 void Client::change_to_pokemon()
 {
 	ui.Swidgt->setCurrentIndex(4);
-	try_query_pokemon_info();
+	if (get_pokemon) {
+		get_pokemon = 0;
+		try_query_pokemon_info();
+	}
+}
+
+void Client::change_to_gacha()
+{
+	ui.Swidgt->setCurrentIndex(5);
 }
 
 void Client::show_pokemon_info(const QString &str)
@@ -102,6 +115,79 @@ void Client::show_pokemon_info(const QString &str)
 	if (list.at(1) != "-1") {
 		ui.list_pokemon_store->addItems(list.at(1).split("$$"));
 	}
+	
+}
+
+void Client::register_or_login_success_slot(const QString &str)
+{
+		QMessageBox::information(this, "提示", str);
+		ui.label_menu_info->setText(QString("用户名:%1").arg(user_name));
+		change_to_menu();
+		
+}
+
+void Client::try_gacha()
+{
+	QString str = "gacha****";
+	if (sender() == ui.Button_gacha1_1) {
+		str.append("1###1");
+	}
+	else return;
+	socket->write(str.toUtf8());
+}
+
+void Client::put_pokemon_to_store()
+{
+	int num = ui.list_pokemon_bag->currentRow();
+	if (num == -1) {
+		QMessageBox::information(this, "提示", "未选择精灵。");
+		return;
+	}
+	ui.list_pokemon_store->addItem(ui.list_pokemon_bag->takeItem(num));
+	handler->player.move_to_store(num);
+}
+
+void Client::put_pokemon_to_bag()
+{
+	if (ui.list_pokemon_bag->count() == 6) {
+		QMessageBox::information(this,"提示","背包已满。");
+		return;
+	}
+	int num = ui.list_pokemon_store->currentRow();
+	if (num == -1) {
+		QMessageBox::information(this, "提示", "未选择精灵。");
+		return;
+	}
+	ui.list_pokemon_bag->addItem(ui.list_pokemon_store->takeItem(num));
+	handler->player.move_to_bag(num);
+	
+}
+
+void Client::try_query_player_pokemon()
+{
+	QString query_user_name = ui.list_player_online->currentItem()->text();
+	QString str = QString("query_player_pokemon****%1").arg(query_user_name);
+	socket->write(str.toUtf8());
+}
+
+void Client::show_query_player_pokemon(const QString &str)
+{
+	ui.list_player_pokemon->clear();
+	if (str == "-1") { 
+		ui.list_player_pokemon->addItem("用户无精灵"); 
+		return;
+	}
+	QStringList list = str.split("###");
+	for (int i = 0; i < list.size(); i++) {
+		ui.list_player_pokemon->addItem(list[i].split(",").at(0));
+	}
+}
+
+void Client::try_fresh_pokemon()
+{
+	QString str = "pokemon_fresh****";
+	str.append(QString::fromStdString( handler->player.pokemon_pos()));//用###分割背包仓库,分割不同精灵
+	socket->write(str.toUtf8());
 }
 
 void Client::send_to_socket()
@@ -112,7 +198,7 @@ void Client::send_to_socket()
 
 void Client::try_login()
 {
-	QString user_name = ui.line_username->text();
+	user_name = ui.line_username->text();
 	if (user_name.length() < 6) {
 		QMessageBox::information(this, "提示", "用户名长度应至少六位，请重新输入。");
 		return;
@@ -129,7 +215,7 @@ void Client::try_login()
 
 void Client::try_register()
 {
-	QString user_name = ui.line_username->text();
+	user_name = ui.line_username->text();
 	if (user_name.length() < 6) {
 		QMessageBox::information(this, "提示", "用户名长度应至少六位，请重新输入。");
 		return;
@@ -151,7 +237,7 @@ void Client::try_query_pokemon_info()
 }
 
 void Client::read_from_socket()
-{
+{	
 	QString str = socket->readAll();
 	qDebug() << "from socket:"<<str;
 	emit socket_to_handler_ready(str);

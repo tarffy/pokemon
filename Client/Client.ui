@@ -259,8 +259,8 @@
        <widget class="QPushButton" name="Button_logout">
         <property name="geometry">
          <rect>
-          <x>650</x>
-          <y>440</y>
+          <x>640</x>
+          <y>490</y>
           <width>171</width>
           <height>61</height>
          </rect>
@@ -280,6 +280,38 @@
         </property>
         <property name="text">
          <string>查看背包、仓库精灵</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_menu_info">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>130</y>
+          <width>241</width>
+          <height>141</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="Button_gacha">
+        <property name="geometry">
+         <rect>
+          <x>620</x>
+          <y>390</y>
+          <width>211</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>抽奖</string>
         </property>
        </widget>
       </widget>
@@ -359,15 +391,46 @@
        <widget class="QPushButton" name="Button_fresh_online_player">
         <property name="geometry">
          <rect>
-          <x>430</x>
-          <y>100</y>
-          <width>93</width>
-          <height>28</height>
+          <x>370</x>
+          <y>120</y>
+          <width>121</width>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
-         <string>刷新</string>
+         <string>刷新在线玩家</string>
         </property>
+       </widget>
+       <widget class="QPushButton" name="Button_query_player_pokemon">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>180</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>查询玩家精灵</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_4">
+        <property name="geometry">
+         <rect>
+          <x>520</x>
+          <y>80</y>
+          <width>311</width>
+          <height>481</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>玩家拥有的全部精灵</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <widget class="QListWidget" name="list_player_pokemon"/>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QWidget" name="page_pokemons">
@@ -385,7 +448,11 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QListWidget" name="list_pokemon_bag"/>
+          <widget class="QListWidget" name="list_pokemon_bag">
+           <property name="flow">
+            <enum>QListView::TopToBottom</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -445,6 +512,152 @@
         <property name="text">
          <string>返回菜单</string>
         </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_gacha">
+       <widget class="QPushButton" name="Button_return_menu4">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>40</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>返回菜单</string>
+        </property>
+       </widget>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>901</width>
+          <height>461</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Tab 1</string>
+         </attribute>
+         <widget class="QWidget" name="widget_5" native="true">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>260</y>
+            <width>681</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QPushButton" name="Button_gacha1_1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>单抽</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="Button_gacha1_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>十连</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Tab 2</string>
+         </attribute>
+         <widget class="QWidget" name="widget_6" native="true">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>250</y>
+            <width>681</width>
+            <height>141</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QPushButton" name="Button_gacha2_1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>单抽</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="Button_gacha2_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>十连</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="page_test">

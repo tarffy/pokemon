@@ -16,6 +16,8 @@ private:
     Ui::ClientClass ui;
 	QTcpSocket *socket;
 	Handler *handler;
+	int get_pokemon = 1;
+	QString user_name;
 public:
 	void try_query_pokemon_info();
 signals:
@@ -29,7 +31,15 @@ public slots:
 	void change_to_menu();		//切换到菜单界面
 	void change_to_query();		//切换到查询界面
 	void change_to_pokemon();	//切换到精灵界面
+	void change_to_gacha();
 	void try_query_player_online();	//查询在线的玩家
 	void show_query_player_result(const QString &str);	//根据查询结果 显示在线的玩家
 	void show_pokemon_info(const QString &str);		//根据返回结果显示背包和仓库内的精灵
+	void register_or_login_success_slot(const QString &str);
+	void try_gacha();
+	void put_pokemon_to_store();
+	void put_pokemon_to_bag();
+	void try_query_player_pokemon();
+	void show_query_player_pokemon(const QString &str);
+	void try_fresh_pokemon();
 };

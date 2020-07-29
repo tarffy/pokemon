@@ -14,13 +14,14 @@ pokemon_base * Handler::string_to_pokemon(const QString & str)
 {
 	pokemon_base *res;
 	QStringList pokemon_args = str.split(",");
-	//影魔,1,500,130,40,100,15,10,2,0,1,0,200
+	//影魔,1,unique_id,pokemon_id,500,130,40,100,15,10,2,0,1,0,200
 	string name = pokemon_args.at(0).toStdString();
+	vector<int>id{ pokemon_args.at(2).toInt(),pokemon_args.at(3).toInt() };
 	vector<int> atti;
-	for (int i = 0; i < 8; i++)atti.push_back(pokemon_args.at(2 + i).toInt());
+	for (int i = 0; i < 8; i++)atti.push_back(pokemon_args.at(4 + i).toInt());
 	vector<int> levels;
-	for (int i = 0; i < 3; i++)atti.push_back(pokemon_args.at(10 + i).toInt());
-	if (pokemon_args.at(1).toInt() == 1)res = new pokemon_r(name, atti, levels);
+	for (int i = 0; i < 3; i++)levels.push_back(pokemon_args.at(12 + i).toInt());
+	if (pokemon_args.at(1).toInt() == 1)res = new pokemon_r(name,id, atti, levels);
 	return res;
 }
 
@@ -62,8 +63,17 @@ void Handler::handle_str_from_socket(const QString & str)
 				}
 			}
 			QString names = QString::fromStdString(player.get_all_names()) ;
+
 			emit pokemon_info_ready(names);
 			
+		}
+		else if (mode=="query_player_pokemon") {//精灵以###隔开 名字登记,unique id
+			emit player_pokemon_ready(list.at(1));
+		}
+		else if (mode == "add_pokemon") {
+			player.put_pokemon_in_store(string_to_pokemon(list.at(1)));
+			QString names = QString::fromStdString(player.get_all_names());
+			emit pokemon_info_ready(names);
 		}
 	}
 }

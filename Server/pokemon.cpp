@@ -285,7 +285,7 @@ void pokemon_base::set_skill(int cur, int id, string name, string descrip, vecto
 string pokemon_base::out_pokemon_info()
 {
 	string dot = ",";
-	string res = pokemon_name + dot + to_string(this->get_rarity())+dot;
+	string res = pokemon_name + dot + to_string(this->get_rarity())+dot+to_string(unique_id)+dot+to_string(pokemon_id)+dot;
 	for (int i = 0; i < 8; i++)res.append(to_string(attributes[i] )+dot);
 	for (int i = 0; i < 3; i++)res.append(to_string(levels[i]) + dot);
 	
