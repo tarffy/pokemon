@@ -8,7 +8,9 @@ class Player {
 	int bag_count = 0;
 	int store_count = 0;
 public:
+	
 	Player();
+	
 	void set_user_name(const string &str) { user_name = str; }
 	void put_pokemon_in_bag(pokemon_base* pok);
 	void put_pokemon_in_store(pokemon_base* pok);

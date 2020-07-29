@@ -5,7 +5,7 @@ using std::to_string;
 Player::Player()
 {
 	pokemon_bag.resize(6);
-	pokemon_store.resize(100);
+	pokemon_store.resize(50);
 }
 
 void Player::put_pokemon_in_bag(pokemon_base * pok)
@@ -17,6 +17,7 @@ void Player::put_pokemon_in_bag(pokemon_base * pok)
 }
 void Player::put_pokemon_in_store(pokemon_base * pok)
 {
+	if (store_count == pokemon_store.size())pokemon_store.resize(pokemon_store.size() + 50);
 	pokemon_store[store_count++] = pok;
 }
 string Player::out_pokemon_info()
@@ -112,6 +113,11 @@ unordered_map<int, string> Player::get_sql_update_info()
 			if (tem != "")res[pok->get_unique_id()] = tem;
 		}
 		return res;
+}
+
+string Player::battle_test()
+{
+	return pokemon_bag[0]->battle_with(pokemon_store[0]);
 }
 
 

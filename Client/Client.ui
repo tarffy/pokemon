@@ -316,7 +316,7 @@
        </widget>
       </widget>
       <widget class="QWidget" name="page_battle">
-       <widget class="QToolButton" name="toolButton">
+       <widget class="QToolButton" name="Button_battle1">
         <property name="geometry">
          <rect>
           <x>40</x>
@@ -329,7 +329,7 @@
          <string>...</string>
         </property>
        </widget>
-       <widget class="QToolButton" name="toolButton_2">
+       <widget class="QToolButton" name="Button_battle2">
         <property name="geometry">
          <rect>
           <x>290</x>
@@ -353,6 +353,22 @@
         </property>
         <property name="text">
          <string>返回菜单</string>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="Text_battle">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>350</y>
+          <width>641</width>
+          <height>211</height>
+         </rect>
+        </property>
+        <property name="undoRedoEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

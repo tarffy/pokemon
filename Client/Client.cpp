@@ -4,10 +4,6 @@ Client::Client(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-
-
-
-
 	socket = new QTcpSocket(this);
 	socket->connectToHost(QHostAddress::LocalHost, 8888);//"188.131.139.250" QHostAddress::LocalHost
 	if (socket->waitForConnected()) {
@@ -38,8 +34,8 @@ Client::Client(QWidget *parent)
 	//战斗页
 	connect(ui.Button_enter_battle, &QPushButton::clicked,  this, &Client::change_to_battle);
 	connect(ui.Button_return_menu1, &QPushButton::clicked, this, &Client::change_to_menu);
-
-	
+	connect(ui.Button_battle1, &QToolButton::clicked, this, &Client::try_battle);
+	connect(handler, &Handler::repo_ready, this, &Client::show_repo);
 	//查询页
 	connect(ui.Button_query, &QPushButton::clicked, this, &Client::change_to_query);
 	connect(ui.Button_return_menu2, &QPushButton::clicked, this, &Client::change_to_menu);
@@ -188,6 +184,20 @@ void Client::try_fresh_pokemon()
 	QString str = "pokemon_fresh****";
 	str.append(QString::fromStdString( handler->player.pokemon_pos()));//用###分割背包仓库,分割不同精灵
 	socket->write(str.toUtf8());
+}
+
+void Client::try_battle()
+{
+	QString str = "battle****";
+	socket->write(str.toUtf8());
+}
+
+void Client::show_repo(const QStringList & list)
+{
+	ui.Text_battle->clear();
+	for (int i = 0; i < list.size(); i++) {
+		ui.Text_battle->append(list.at(i));
+	}
 }
 
 void Client::send_to_socket()

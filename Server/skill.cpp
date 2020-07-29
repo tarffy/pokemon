@@ -43,10 +43,10 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 	skill_base *skill = source->get_skills()[0];
 	vector<int> &skill_args = this->get_args();
 	if (is_skill_cd()) {
-		cout << "skill cding\n";
+		//cout << "skill cding\n";
 		return 0;
 	}
-	cout << "使用技能" << this->get_name() << " " << this->get_description()<<endl;
+	//cout << "使用技能" << this->get_name() << " " << this->get_description()<<endl;
 	vector<int> &source_atti = source->get_attribute();
 	vector<int> &source_atti_z = source->get_attribute_z();
 	vector<int> &enemy_atti = enemy->get_attribute();
@@ -92,7 +92,8 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 		break;
 	}
 	default:
-		cout << "No such skill!";
+		break;
+		//cout << "No such skill!";
 	}
 
 	if (status_add_flag1)source_status[this->get_id()] = status_args1;

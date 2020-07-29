@@ -42,4 +42,6 @@ public slots:
 	void try_query_player_pokemon();
 	void show_query_player_pokemon(const QString &str);
 	void try_fresh_pokemon();
+	void try_battle();
+	void show_repo(const QStringList &list);
 };

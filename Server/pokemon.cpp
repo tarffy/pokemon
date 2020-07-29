@@ -19,7 +19,7 @@ string pokemon_r::use_skills(pokemon_base * enemy)
 		}
 	}
 	if (flag)skill_used.append(to_string(-1));
-	skill_used.append("&&");
+	skill_used.append("$$");
 	return skill_used;
 }
 
@@ -54,7 +54,7 @@ string pokemon_base::status_fresh()
 			attributes_z[0] -= it[2];
 			status_str.push_back(i.first);
 			status_str.push_back(it[2]);
-			cout << "因为中毒受到了" << it[2] << "点伤害\n";
+			//cout << "因为中毒受到了" << it[2] << "点伤害\n";
 			break;
 		}
 		case 102: {
@@ -77,7 +77,7 @@ string pokemon_base::status_fresh()
 
 	}
 	if (flag)res.append(to_string(-1));
-	res.append("&&");
+	res.append("$$");
 	for (auto &it : to_delete)status.erase(it);
 	return res;
 }
@@ -92,7 +92,7 @@ bool pokemon_base::get_true_at_rate(int rate100)
 	return get_true_at_rate(1.0*rate100 / 100);
 }
 
-void pokemon_base::battle_with(pokemon_base * enemy)
+string pokemon_base::battle_with(pokemon_base * enemy)
 {
 	repo.clear();
 	
@@ -102,28 +102,53 @@ void pokemon_base::battle_with(pokemon_base * enemy)
 	vector<int> &source_atti_z = this->get_attribute_z();
 	vector<int> &enemy_atti_z = enemy->get_attribute_z();
 	int battle_continue = 1, win_flag;
-	cout << "战斗开始了bro\n";
-	this->out_z_status();
-	enemy->out_z_status();
+	//cout << "战斗开始了bro\n";
+	//this->out_z_status();
+	//enemy->out_z_status();
 	while (battle_continue) {
 		int is_battled = 0;
 		source_distence += source_atti_z[3];
 		enemy_distence += enemy_atti_z[3];
 		if (source_distence >= enemy_distence && source_distence > distence) {
 			is_battled = 1;
-			cout << "\n我方行动中！" << endl;
+			//cout << "\n我方行动中！" << endl;
 			source_distence -= distence;
-			repo.append("0&&");
+			repo.append("0$$");
 			string turn_str= attack_turn(enemy);
 			repo.append(turn_str);
 
 			
 		}
+		if (is_battled) {
+			string atti_str;
+			for (int i = 0; i < 6; i++) {
+				if (i)atti_str.append(",");
+				atti_str.append(to_string(source_atti_z[i]));
+			}
+			atti_str.append("<>");
+			for (int i = 0; i < 6; i++) {
+				if (i)atti_str.append(",");
+				atti_str.append(to_string(enemy_atti_z[i]));
+			}
+			repo.append(atti_str);
+			repo.append("###");
+			//this->out_z_status();
+			//enemy->out_z_status();
+			if (enemy_atti_z[0] <= 0) {
+				win_flag = 1;
+				break;
+			}
+			else if (source_atti_z[0] <= 0) {
+				win_flag = 0;
+				break;
+			}
+		}
+		is_battled = 0;
 		if (enemy_distence >= source_distence && enemy_distence > distence) {
-			cout << "\n敌方行动中！" << endl;
+			//cout << "\n敌方行动中！" << endl;
 			is_battled = 1;
 			enemy_distence -= distence;
-			repo.append("1&&");
+			repo.append("1$$");
 			string turn_str=enemy->attack_turn(this);
 			repo.append(turn_str);
 
@@ -142,8 +167,8 @@ void pokemon_base::battle_with(pokemon_base * enemy)
 			}
 			repo.append(atti_str);
 			repo.append("###");
-			this->out_z_status();
-			enemy->out_z_status();
+			//this->out_z_status();
+			//enemy->out_z_status();
 			if (enemy_atti_z[0] <= 0) {
 				win_flag = 1;
 				break;
@@ -154,14 +179,13 @@ void pokemon_base::battle_with(pokemon_base * enemy)
 		}
 	}
 	repo.append("FINAL");
-	repo.insert(0, to_string(!win_flag) + string("###"));
+	repo.insert(0, to_string(win_flag) + string("###"));
 
-	if (win_flag)cout << "老弟真的猛\n";
-	else cout << "哈哈被打丢了吧\n";
+
 
 	this->get_exp(win_flag ? 150 : 50);
 	enemy->get_exp(win_flag ? 50 : 150);
-	//cout << repo<<repo.size();
+	return repo;
 }
 
 string pokemon_base::attack_turn(pokemon_base * enemy)
@@ -190,22 +214,22 @@ string pokemon_base::attack_turn(pokemon_base * enemy)
 	int is_miss = 0, critical_increase = 0;
 	if (get_true_at_rate(source_atti_z[4])) {
 		critical_increase = demage / 2;
-		cout << "造成了暴击！\n";
+		//cout << "造成了暴击！\n";
 	}
 	else if (get_true_at_rate(enemy_atti_z[5])) {
 		is_miss = 1;
-		cout << "对方闪避了伤害！\n";
+		//cout << "对方闪避了伤害！\n";
 	}
 	if (is_miss)demage = 0;
 	else {
 		demage = demage + type_change + critical_increase;
-		cout << "我方造成了" << demage << "点伤害!" << type_status << endl;
+		//cout << "我方造成了" << demage << "点伤害!" << type_status << endl;
 	}
 	int tem_type;
 	if (type_change > 0)tem_type = 1; else if (type_change == 0) tem_type = 0; else tem_type = -1;
 	string dot = ",";
 	string demage_str = to_string(critical_increase ? 1 : 0) + dot + to_string(is_miss)
-		+ dot + to_string(tem_type) + dot + to_string(demage) + string("&&");
+		+ dot + to_string(tem_type) + dot + to_string(demage) + string("$$");
 
 
 	enemy_atti_z[0] -= demage;
@@ -233,25 +257,28 @@ void pokemon_base::out_status()
 	case 2:_class = "防御型"; break;
 	case 3:_class = "敏捷型"; break;
 	}
+	
 	cout << "Name:" << pokemon_name <<type<<" "<<_class <<endl;
 	cout << "Level: " << levels[0] << " Exp_now: " << levels[1] << " Exp_levelup: " << levels[2] << endl;
 	cout << "Attributes: HP:" << attributes[0] << " Attack: " << attributes[1] << " Defence: " << attributes[2]
 		<< " Speed: " << attributes[3] << " Critical: " << attributes[4] << " Miss: " << attributes[5] << endl;
 	cout << "Attributes: HP:" << attributes_z[0] << " Attack: " << attributes_z[1] << " Defence: " << attributes_z[2]
 		<< " Speed: " << attributes_z[3] << " Critical: " << attributes_z[4] << " Miss: " << attributes_z[5] << endl;
+		
 
 }
 
 void pokemon_base::out_z_status()
-{
+{	
 	cout << "Name:" << pokemon_name << endl;
 	cout << "Attributes: HP:" << attributes_z[0] << " Attack: " << attributes_z[1] << " Defence: " << attributes_z[2]
 		<< " Speed: " << attributes_z[3] << " Critical: " << attributes_z[4] << " Miss: " << attributes_z[5] << endl;
+		
 }
 
 void pokemon_base::get_exp(int exp)
 {
-	cout << pokemon_name << "得到" << exp << "点经验";
+	//cout << pokemon_name << "得到" << exp << "点经验";
 	int tem = levels[0];
 	while (levels[1] + exp >= levels[2]) {
 		if (levels[0] < 15)++levels[0];
@@ -261,9 +288,9 @@ void pokemon_base::get_exp(int exp)
 		level_up();
 	}
 	levels[1] += exp;
-	if (levels[0] != tem)cout << "升级!";
-	cout << endl;
-	cout << "Level: " << levels[0] << " Exp_now: " << levels[1] << " Exp_levelup: " << levels[2] << endl;
+	//if (levels[0] != tem)cout << "升级!";
+	//cout << endl;
+	//cout << "Level: " << levels[0] << " Exp_now: " << levels[1] << " Exp_levelup: " << levels[2] << endl;
 }
 
 void pokemon_base::level_up()

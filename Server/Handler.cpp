@@ -199,7 +199,6 @@ void Handler::get_string_from_socket(const QString & str)
 				emit string_to_socket_ready(str, 1);
 			}
 		}
-
 	}
 	else if (mode=="pokemon_fresh") {
 
@@ -215,6 +214,10 @@ void Handler::get_string_from_socket(const QString & str)
 			stmt->executeUpdate(str.toUtf8().data());
 		}
 		
+	}
+	else if (mode == "battle") {
+		QString str = QString("battle****")+QString::fromStdString(player.battle_test());
+		emit string_to_socket_ready(str, 1);
 	}
 
 

@@ -25,19 +25,11 @@ public:
 		unique_id = id[0];
 		pokemon_id = id[1];
 	};
-	string status_fresh();
-	inline bool get_true_at_rate(double rate);
-	inline bool get_true_at_rate(int rate100);
-	inline double get_rand() { return rand() % 1001 * 1.0 / 1000; }
-	void battle_with(pokemon_base *enemy);
-	string attack_turn(pokemon_base *enemy);
-	void atti_reset() { attributes_z = attributes; }//战斗后将状态重置
-	void get_exp(int exp);
-	void level_up();
-	void involve();
+
+
+
 	virtual string use_skills(pokemon_base *enemy) { return ""; }
-	void out_status();
-	void out_z_status();
+
 	virtual void set_skill(int cur, int id, string name, string descrip, vector<int> skill_args);
 	//get and set
 	string get_name() { return pokemon_name; }

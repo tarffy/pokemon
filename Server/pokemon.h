@@ -32,7 +32,7 @@ public:
 	inline bool get_true_at_rate(double rate);
 	inline bool get_true_at_rate(int rate100);
 	inline double get_rand() { return rand() % 1001 * 1.0 / 1000; }
-	void battle_with(pokemon_base *enemy);	//开始一场酣畅淋漓的战斗
+	string battle_with(pokemon_base *enemy);	//开始一场酣畅淋漓的战斗
 	string attack_turn(pokemon_base *enemy);//战斗双方其中一方的回合	
 	void atti_reset() { attributes_z = attributes; }//战斗前将状态重置
 	void get_exp(int exp);	//获取经验 升级会调用level_up

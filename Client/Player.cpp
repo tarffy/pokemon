@@ -3,8 +3,11 @@ using std::to_string;
 Player::Player()
 {
 	pokemon_bag.resize(6);
-	pokemon_store.resize(100);
+	pokemon_store.resize(50);
+	
 }
+
+
 
 void Player::put_pokemon_in_bag(pokemon_base * pok)
 {
@@ -16,6 +19,7 @@ void Player::put_pokemon_in_bag(pokemon_base * pok)
 
 void Player::put_pokemon_in_store(pokemon_base * pok)
 {
+	if (store_count == pokemon_store.size())pokemon_store.resize(pokemon_store.size() + 50);
 	pokemon_store[store_count++] = pok;
 }
 
