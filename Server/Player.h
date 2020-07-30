@@ -20,4 +20,5 @@ public:
 	unordered_map<int,string > get_sql_update_info();
 	int get_store_num() { return store_count; }
 	string battle_test();
+	void get_pokemon_update_string(pokemon_base*pok, string &res,int i);
 };

@@ -102,3 +102,14 @@ string Player::pokemon_pos()
 	if (flag)res.append("-1");
 	return res;
 }
+
+pokemon_base * Player::find_pok_by_unique(int id)
+{
+	for (int i = 0; i < bag_count; ++i) {
+		if (pokemon_bag[i]->get_unique_id() == id)return pokemon_bag[i];
+	}
+	for (int i = 0; i < store_count; ++i) {
+		if (pokemon_store[i]->get_unique_id() == id)return pokemon_store[i];
+	}
+	return nullptr;
+}

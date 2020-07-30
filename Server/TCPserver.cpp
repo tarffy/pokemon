@@ -4,6 +4,7 @@ TCPserver::TCPserver(QObject *parent)
 	: QTcpServer(parent)
 {
 	qRegisterMetaType<qintptr>("qintptr");
+	Handler handler;
 }
 
 TCPserver::~TCPserver()

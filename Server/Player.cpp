@@ -85,31 +85,13 @@ unordered_map<int, string> Player::get_sql_update_info()
 		for (int i = 0; i < bag_count; i++) {
 			pokemon_base *pok = pokemon_bag[i];
 			string tem("");
-			for (int j = 0; j < pok->need_update.size(); ++j)
-				if (pok->need_update[j]) {
-					switch (j)
-					{
-					case 0:tem.append(" bag_store=");
-						tem.append(to_string(i));
-						tem.append(" ");
-						pok->need_update[j] = false;
-					}
-			}
+			get_pokemon_update_string(pok, tem,i);
 			if (tem != "")res[pok->get_unique_id()] = tem;
 		}
 		for (int i = 0; i < store_count; i++) {
 			pokemon_base *pok = pokemon_store[i];
 			string tem("");
-			for (int j = 0; j < pok->need_update.size(); ++j)
-				if (pok->need_update[j]) {
-					switch (j)
-					{
-					case 0:tem.append(" bag_store=");
-						tem.append(to_string(i+10));
-						tem.append(" ");
-						pok->need_update[j] = false;
-					}
-				}
+			get_pokemon_update_string(pok, tem, i+10);
 			if (tem != "")res[pok->get_unique_id()] = tem;
 		}
 		return res;
@@ -117,7 +99,41 @@ unordered_map<int, string> Player::get_sql_update_info()
 
 string Player::battle_test()
 {
+	pokemon_bag[0]->need_update[1] = true;
+	pokemon_store[0]->need_update[1] = true;
 	return pokemon_bag[0]->battle_with(pokemon_store[0]);
+}
+
+void Player::get_pokemon_update_string(pokemon_base *pok,string & res,int i)
+{
+	int first = 1;
+	for (int j = 0; j < pok->need_update.size(); ++j)
+		if (pok->need_update[j]) {
+			switch (j)
+			{
+			case 0:
+				if (first)first = 0; else res.append(",");
+				res.append(" bag_store=");
+				res.append(to_string(i));
+				res.append(" ");
+				break;
+			case 1:
+				if (first)first = 0; else res.append(",");
+				auto atti = pok->get_attribute();
+				auto level = pok->get_levels();
+				res.append("hp="); res.append(to_string(atti[0]));
+				res.append(",attack="); res.append(to_string(atti[1]));
+				res.append(",defence="); res.append(to_string(atti[2]));
+				res.append(",speed="); res.append(to_string(atti[3]));
+				res.append(",level="); res.append(to_string(level[0]));
+				res.append(",exp_now="); res.append(to_string(level[1]));
+				res.append(",exp_levelup="); res.append(to_string(level[2]));
+				res.append(" ");
+				break;
+
+			}
+			pok->need_update[j] = false;
+		}
 }
 
 

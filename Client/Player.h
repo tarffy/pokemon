@@ -19,4 +19,5 @@ public:
 	void move_to_bag(int store_num);
 	void move_to_store(int bag_num);
 	string pokemon_pos();	//返回背包和仓库各位置的精灵unique id
+	pokemon_base *find_pok_by_unique(int id);
 };

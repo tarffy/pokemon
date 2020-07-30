@@ -16,12 +16,14 @@ public:
 	void get_player_pokemons();			//登录成功后从SQL获取用户的精灵信息
 	pokemon_base *res_to_pokemon(sql::ResultSet *res);//将一条结果信息变成pokemon
 	pokemon_base* give_player_random_r(QString &info=QString(""));
+	void update_pokemon_sql();
 private:
 	QString user_name;
 	sql::mysql::MySQL_Driver *driver;		//mysql驱动
 	sql::Connection *con;					//连接
 	sql::Statement *stmt;					//语句
 	sql::ResultSet *res;					//结果集
+	sql::ResultSet *res2;					//结果集
 	Player player;
 public slots:
 	//将socket传给handler的str进行处理 处理后触发string_to_socket_ready信号

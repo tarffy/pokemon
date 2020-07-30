@@ -22,6 +22,7 @@ pokemon_base * Handler::string_to_pokemon(const QString & str)
 	for (int i = 0; i < 8; i++)atti.push_back(pokemon_args.at(4 + i).toInt());
 	vector<int> levels;
 	for (int i = 0; i < 3; i++)levels.push_back(pokemon_args.at(12 + i).toInt());
+
 	if (pokemon_args.at(1).toInt() == 1)res = new pokemon_r(name,id, atti, levels);
 	return res;
 }
@@ -51,11 +52,21 @@ void Handler::excute_one_turn(const QString & input, QString & res)
 			res.append(QString("使用技能 %1 %2\n").arg(skill.first).arg(skill.second));
 		}
 	}
-	if (turn_list.at(2) == "-1") {
+	if (turn_list.at(2) == "-1") {//技能状态以<>隔开
 		res.append("无技能状态更新\n");
+		
 	}
 	else {
-		QStringList skill_used = turn_list.at(2).split(",");
+		QStringList status = turn_list.at(2).split("<>");
+		for (int i = 0; i < status.size(); ++i) {
+			QStringList sta = status.at(i).split(",");
+			QString str_res = skill_status_database[sta.at(0).toInt()];
+			for (int i = 1; i < sta.size(); ++i) {
+				res = str_res.arg(sta.at(i).toInt());
+			}
+			res.append(str_res);
+		}
+
 	}
 	QStringList demage_list = turn_list.at(3).split(",");
 	if (demage_list.at(0).toInt()) {
@@ -101,6 +112,7 @@ void Handler::database_init()
 	skill_database[201] = pair<QString, QString>{ "净化之力", "消除所有负面状态" };
 
 	//skill_database[] = pair<QString, QString>{  };
+	skill_status_database[101] = "因为中毒受到了%1点伤害\n";
 }
 
 void Handler::handle_str_from_socket(const QString & str)
@@ -154,17 +166,49 @@ void Handler::handle_str_from_socket(const QString & str)
 			emit pokemon_info_ready(names);
 		}
 		else if (mode == "battle") {
-			
-			QStringList repo;
+			QStringList repo;			
 			QStringList turns = list.at(1).split("###");
 			int win_flag = turns.at(0).toInt();	//1为获胜
-			for (int i = 1; i < turns.size()-1; i++) {
+
+			QString start;
+			QStringList pokemon_status = turns.at(1).split("<>");
+			for (int i = 0; i < 2; i++) {
+				QStringList atti = pokemon_status.at(i).split(",");
+				if (i)start.append("对方精灵属性:\n");
+				else start.append("我方精灵属性:\n");
+				start.append(QString("HP:%1 攻击:%2 防御:%3 速度:%4 暴击率:%5% 闪避率:%6%\n")
+					.arg(atti.at(0)).arg(atti.at(1)).arg(atti.at(2)).arg(atti.at(3)).arg(atti.at(4)).arg(atti.at(5)));
+			}
+			repo.append(start);
+
+			pokemon_base *pok = player.find_pok_by_unique(turns.at(2).toInt());
+
+			for (int i = 3; i < turns.size()-1; i++) {
 				QString turn;
 				excute_one_turn(turns.at(i), turn);
 				repo.append(turn);
 			}
 			if (win_flag)repo.append("\n我方获胜！");
 			else repo.append("\n对方获胜!");
+			//150,6,6,1050,1200,
+			//150,6,7,0,1400,849,158,52,132,###1,10	升级的
+			QStringList levels = list.at(2).split("###");
+			QStringList exps = levels[0].split(",");
+			
+			repo.append(QString("获得了%1点经验，").arg(exps[0]));
+			pok->gain_exp(exps[0].toInt());
+			if (exps[1] == exps[2]) {
+				repo.append(QString("当前经验值:%1,升级需要经验值:%2。\n").arg(exps[3]).arg(exps[4]));
+				
+			}
+			else {
+				repo.append(QString("精灵升到%1级!\n").arg(exps[2]));
+				repo.append(QString("升级后属性：\nHP:%1 攻击:%2 防御:%3 速度:%4\n")
+					.arg(exps[5]).arg(exps[6]).arg(exps[7]).arg(exps[8]));
+				repo.append(QString("当前经验值:%1,升级需要经验值:%2。\n").arg(exps[3]).arg(exps[4]));
+				
+			}
+			
 			emit repo_ready(repo);
 		}
 	}

@@ -101,6 +101,22 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 	enemy->atti_reset();
 	vector<int> &source_atti_z = this->get_attribute_z();
 	vector<int> &enemy_atti_z = enemy->get_attribute_z();
+	{
+		string atti_str;
+		for (int i = 0; i < 6; i++) {
+			if (i)atti_str.append(",");
+			atti_str.append(to_string(source_atti_z[i]));
+		}
+		atti_str.append("<>");
+		for (int i = 0; i < 6; i++) {
+			if (i)atti_str.append(",");
+			atti_str.append(to_string(enemy_atti_z[i]));
+		}
+		repo.append(atti_str);
+		repo.append("###"); 
+		repo.append(to_string(unique_id));
+		repo.append("###");
+	}
 	int battle_continue = 1, win_flag;
 	//cout << "战斗开始了bro\n";
 	//this->out_z_status();
@@ -182,9 +198,9 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 	repo.insert(0, to_string(win_flag) + string("###"));
 
 
-
-	this->get_exp(win_flag ? 150 : 50);
+	string exp_and_level=this->get_exp(win_flag ? 150 : 50);
 	enemy->get_exp(win_flag ? 50 : 150);
+	repo.append(exp_and_level);
 	return repo;
 }
 
@@ -276,21 +292,31 @@ void pokemon_base::out_z_status()
 		
 }
 
-void pokemon_base::get_exp(int exp)
+string pokemon_base::get_exp(int exp)
 {
-	//cout << pokemon_name << "得到" << exp << "点经验";
+	string res = "****"+to_string(exp) + ",";
 	int tem = levels[0];
 	while (levels[1] + exp >= levels[2]) {
-		if (levels[0] < 15)++levels[0];
-		exp= levels[1] + exp - levels[2];
+		if (levels[0] == 15)break;
+		++levels[0]; 
+		exp = levels[1] + exp - levels[2];
 		levels[1] = 0;
 		levels[2] = levels[0] * 200;		//下一级升级经验
 		level_up();
 	}
 	levels[1] += exp;
-	//if (levels[0] != tem)cout << "升级!";
+	res += (to_string(tem) +","+ to_string(levels[0])+",");
+	res += (to_string(levels[1]) + "," + to_string(levels[2])+",");
+	if (levels[0] != tem) {
+		for (int i = 0; i < 4; i++)
+			res += (to_string(attributes[i]) + ",");
+		res.append("###1,10");
+	}
+	
+
 	//cout << endl;
 	//cout << "Level: " << levels[0] << " Exp_now: " << levels[1] << " Exp_levelup: " << levels[2] << endl;
+	return res;
 }
 
 void pokemon_base::level_up()
