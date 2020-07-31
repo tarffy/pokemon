@@ -319,27 +319,14 @@
        <widget class="QToolButton" name="Button_battle1">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>580</x>
           <y>150</y>
-          <width>151</width>
-          <height>181</height>
+          <width>101</width>
+          <height>101</height>
          </rect>
         </property>
         <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-       <widget class="QToolButton" name="Button_battle2">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>150</y>
-          <width>151</width>
-          <height>181</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>...</string>
+         <string>TEST</string>
         </property>
        </widget>
        <widget class="QPushButton" name="Button_return_menu1">
@@ -355,20 +342,35 @@
          <string>返回菜单</string>
         </property>
        </widget>
-       <widget class="QTextEdit" name="Text_battle">
+       <widget class="QGroupBox" name="groupBox_5">
         <property name="geometry">
          <rect>
-          <x>70</x>
-          <y>350</y>
-          <width>641</width>
-          <height>211</height>
+          <x>30</x>
+          <y>70</y>
+          <width>261</width>
+          <height>501</height>
          </rect>
         </property>
-        <property name="undoRedoEnabled">
-         <bool>false</bool>
+        <property name="title">
+         <string>选择精灵</string>
         </property>
-        <property name="readOnly">
-         <bool>true</bool>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QListWidget" name="list_battle_enemy"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="Button_battle_levelup">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>150</y>
+          <width>171</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>升级战</string>
         </property>
        </widget>
       </widget>
@@ -676,61 +678,99 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_test">
-       <widget class="QPushButton" name="Button_socket">
+      <widget class="QWidget" name="page_repo">
+       <widget class="QWidget" name="widget_7" native="true">
         <property name="geometry">
          <rect>
-          <x>110</x>
-          <y>100</y>
-          <width>191</width>
-          <height>91</height>
+          <x>10</x>
+          <y>30</y>
+          <width>451</width>
+          <height>281</height>
          </rect>
         </property>
-        <property name="text">
-         <string>socket发送</string>
-        </property>
+        <widget class="QLabel" name="label_source_pok_img">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>0</y>
+           <width>221</width>
+           <height>191</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_source_pok_status">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>200</y>
+           <width>351</width>
+           <height>81</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </widget>
-       <widget class="QTextEdit" name="Text_send">
+       <widget class="QWidget" name="widget_8" native="true">
         <property name="geometry">
          <rect>
-          <x>100</x>
-          <y>240</y>
-          <width>241</width>
-          <height>211</height>
+          <x>470</x>
+          <y>30</y>
+          <width>451</width>
+          <height>281</height>
          </rect>
         </property>
+        <widget class="QLabel" name="label_enemy_pok_img">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>0</y>
+           <width>221</width>
+           <height>191</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_enemy_pok_status">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>200</y>
+           <width>351</width>
+           <height>81</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </widget>
-       <widget class="QTextEdit" name="Text_read">
+       <widget class="QTextEdit" name="Text_battle_2">
         <property name="geometry">
          <rect>
-          <x>440</x>
-          <y>250</y>
-          <width>261</width>
-          <height>191</height>
+          <x>20</x>
+          <y>320</y>
+          <width>861</width>
+          <height>241</height>
          </rect>
         </property>
-       </widget>
-       <widget class="QTextEdit" name="Text_status">
-        <property name="geometry">
-         <rect>
-          <x>510</x>
-          <y>110</y>
-          <width>241</width>
-          <height>81</height>
-         </rect>
+        <property name="undoRedoEnabled">
+         <bool>false</bool>
         </property>
-       </widget>
-       <widget class="QPushButton" name="Button_disconnect">
-        <property name="geometry">
-         <rect>
-          <x>320</x>
-          <y>110</y>
-          <width>151</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>断开连接</string>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

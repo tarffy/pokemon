@@ -23,6 +23,7 @@ public:
 	string get_name() const{ return skill_name; }
 	string get_description() const { return skill_decription; }
 	inline bool is_skill_cd();
+	void cd_reset() { cd_now = skill_args[1]; }
 };
 /*
 class skill_enhance :public skill_base {

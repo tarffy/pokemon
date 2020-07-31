@@ -1,5 +1,6 @@
 ﻿#include "Client.h"
 #include <qmessagebox.h>
+#include <qtestsupport_core.h>
 Client::Client(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -13,7 +14,6 @@ Client::Client(QWidget *parent)
 		qDebug() << "TCP connect failed";
 		QMessageBox::information(this, "提示", "无法连接到服务器!");
 	}
-	connect(ui.Button_socket, &QPushButton::clicked, this, &Client::send_to_socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Client::read_from_socket);
 
 	handler = new Handler();
@@ -25,7 +25,6 @@ Client::Client(QWidget *parent)
 	connect(handler,&Handler::socket_information, [=](const QString &str) {
 		QMessageBox::information(this, "提示", str);
 	});
-	connect(ui.Button_disconnect, &QPushButton::clicked, socket, &QTcpSocket::disconnectFromHost);
 	//登录页
 	connect(ui.button_login, &QPushButton::clicked, this, &Client::try_login);
 	connect(ui.button_register, &QPushButton::clicked, this, &Client::try_register);
@@ -33,9 +32,12 @@ Client::Client(QWidget *parent)
 	connect(ui.Button_logout, &QPushButton::clicked, this, &QWidget::close);
 	//战斗页
 	connect(ui.Button_enter_battle, &QPushButton::clicked,  this, &Client::change_to_battle);
+
 	connect(ui.Button_return_menu1, &QPushButton::clicked, this, &Client::change_to_menu);
 	connect(ui.Button_battle1, &QToolButton::clicked, this, &Client::try_battle);
 	connect(handler, &Handler::repo_ready, this, &Client::show_repo);
+	connect(handler, &Handler::enemy_list_ready, this, &Client::show_enemy);
+	connect(ui.Button_battle_levelup, &QPushButton::clicked, this, &Client::battle_levelup);
 	//查询页
 	connect(ui.Button_query, &QPushButton::clicked, this, &Client::change_to_query);
 	connect(ui.Button_return_menu2, &QPushButton::clicked, this, &Client::change_to_menu);
@@ -88,10 +90,10 @@ void Client::show_query_player_result(const QString & str)
 void Client::change_to_pokemon()
 {
 	ui.Swidgt->setCurrentIndex(4);
-	if (get_pokemon) {
+	/*if (get_pokemon) {
 		get_pokemon = 0;
 		try_query_pokemon_info();
-	}
+	}*/
 }
 
 void Client::change_to_gacha()
@@ -117,7 +119,7 @@ void Client::show_pokemon_info(const QString &str)
 void Client::register_or_login_success_slot(const QString &str)
 {
 		QMessageBox::information(this, "提示", str);
-		ui.label_menu_info->setText(QString("用户名:%1").arg(user_name));
+		ui.label_menu_info->setText(QString("用户名:%1\n勋章：没").arg(user_name));
 		change_to_menu();
 		
 }
@@ -194,17 +196,34 @@ void Client::try_battle()
 
 void Client::show_repo(const QStringList & list)
 {
-	ui.Text_battle->clear();
+	
+	ui.Text_battle_2->clear();
+	ui.Swidgt->setCurrentIndex(6);
 	for (int i = 0; i < list.size(); i++) {
-		ui.Text_battle->append(list.at(i));
+		
+		ui.Text_battle_2->append(list.at(i));
+		QTest::qWait(1000);
 	}
+	ui.Swidgt->setCurrentIndex(2);
 }
 
-void Client::send_to_socket()
+void Client::show_enemy(const QStringList & list)
 {
-	QString str = ui.Text_send->toPlainText();
-	socket->write(str.toUtf8());
+	ui.list_battle_enemy->clear();
+	ui.list_battle_enemy->addItems(list);
 }
+
+void Client::battle_levelup()
+{
+	int num = ui.list_battle_enemy->currentRow();
+	if (num == -1) {
+		QMessageBox::information(this, "提示", "未选择升级战对战精灵。");
+		return;
+	}
+	QString res = QString("battle_levelup****%1###%2").arg(handler->player.get_unique_by_pos(0)).arg(num);
+	socket->write(res.toUtf8());
+}
+
 
 void Client::try_login()
 {
@@ -248,6 +267,7 @@ void Client::try_query_pokemon_info()
 
 void Client::read_from_socket()
 {	
+	QTest::qWait(50);
 	QString str = socket->readAll();
 	qDebug() << "from socket:"<<str;
 	emit socket_to_handler_ready(str);

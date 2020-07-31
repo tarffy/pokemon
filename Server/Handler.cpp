@@ -1,6 +1,7 @@
 ﻿#include "Handler.h"
 #include <string>
 using std::string;
+#define AD_NAME "AFMowqmt1ga21"
 Handler::Handler(QObject *parent)
 	: QObject(parent)
 {
@@ -63,25 +64,31 @@ pokemon_base * Handler::res_to_pokemon(sql::ResultSet * res)
 	{
 	case 1:
 		pok = new pokemon_r(pokemon_name, id, atti, level);
+		break;
 	}
-	int skill_init = res->getInt("skill1");
-	if (skill_init != -1) {
-		res2 = stmt->executeQuery(QString("select * from skill where id=%1;\0").arg(skill_init).toUtf8().data());
-		if (res2->next()) {
-			pok->set_skill(0, res2->getInt("id"), "", "", vector<int>{res2->getInt("arg1"), res2->getInt("arg2"), res2->getInt("arg3"), res2->getInt("arg4")});
+	vector<int> skills = { res->getInt("skill1"),res->getInt("skill2") };
+	for (int i = 0; i < 2; ++i) {
+		if (skills[i] != -1) {
+			res2 = stmt->executeQuery(QString("select * from skill where id=%1;\0").arg(skills[i]).toUtf8().data());
+			if (res2->next()) {
+				pok->set_skill(i, res2->getInt("id"), "", "", vector<int>{res2->getInt("arg1"), res2->getInt("arg2"), res2->getInt("arg3"), res2->getInt("arg4")});
+			}
 		}
 	}
+
 	return pok;
 }
 
 pokemon_base* Handler::give_player_random_r(QString &info)
 {
 	pokemon_base *pok;
-	int choice = rand() % 3 + 1;
-	res = stmt->executeQuery(QString("select * from pokemon_base where id=%1;\0").arg(choice).toUtf8().data());
+	res= stmt->executeQuery(QString("select count(*) num from pokemon_base where rarity=1\0").toUtf8().data());
+	res->next();
+	int num = res->getInt("num");
+	res = stmt->executeQuery(QString("select * from pokemon_base limit 1 offset %1\0").arg(rand()%num).toUtf8().data());
 	if (res->next()) {
 		int skill_init = res->getInt("skill_init");
-		QString pokemon_info_sql = QString("('%1',%2,%3,'%4',%5,%6,%7,%8,%9,%10,%11,%12,%13,1,0,200,%14,%15)")
+		QString pokemon_info_sql = QString("('%1',%2,%3,'%4',%5,%6,%7,%8,%9,%10,%11,%12,%13,1,0,200,%14,%15,-1,-1,-1)")
 			.arg(user_name).arg(player.get_next_unique())
 			.arg(res->getInt("id")).arg(res->getString("name").c_str()).arg(res->getInt("rarity"))
 			.arg(res->getInt("class")).arg(res->getInt("type"))
@@ -121,6 +128,64 @@ void Handler::update_pokemon_sql()
 	}
 }
 
+void Handler::server_handler()
+{
+	user_name = AD_NAME;
+	player.set_user_name(AD_NAME);
+	QString a;
+	stmt->execute("delete from pokemon_user where user_name ='AFMowqmt1ga21'");
+	//stmt->execute("update users set next_unique = 0 where user_name='AFMowqmt1ga21'");
+	player.set_next_unique(0);
+	for (int i = 0; i < 10; ++i) {
+		give_player_random_r(a);
+	}
+	get_player_pokemons();
+	player.server_handle();
+	for (int i = 0; i < 10; i++)check_skill_update(player.find_pok_by_unique(i));
+	update_pokemon_sql();
+}
+
+void Handler::send_battle_enemy()
+{
+	QString str_res="battle_pokemon****";
+	res = stmt->executeQuery(QString("select * from pokemon_user where user_name='%1'").arg(AD_NAME).toUtf8().data());
+	int flag = 1;
+	while (res->next()) {
+		if (flag)flag = 0; else str_res.append("###");
+		str_res.append(res->getString("pokemon_name").c_str());
+		str_res.append(" lv.");
+		str_res.append(res->getString("level").c_str());
+		QString type;
+		switch (res->getInt("type"))
+		{
+		case 0:type = " 水属性"; break;
+		case 1:type = " 火属性"; break;
+		case 2:type = " 草属性"; break;
+		case 3:type = " 普通属性"; break;
+		}
+		str_res.append(type);
+	}
+	emit string_to_socket_ready(str_res, 1);
+}
+
+void Handler::check_skill_update(pokemon_base *pok)
+{
+	for(int i=2;i<=4;++i)
+	if (pok->need_update[i] == 1) {
+		res2 = stmt->executeQuery(QString("select count(*) num from skill\0").toUtf8().data());
+		res2->next();
+		int skill_num = res2->getInt("num");
+		res2 = stmt->executeQuery(QString("select * from skill limit 1 offset %1\0").arg(rand() % skill_num).toUtf8().data());
+		if (res2->next()) {
+			pok->set_skill(i-1, res2->getInt("id"), "", "", vector<int>{res2->getInt("arg1"), res2->getInt("arg2"), res2->getInt("arg3"), res2->getInt("arg4")});
+		}
+		stmt->execute(QString("update pokemon_user set skill%1=%2 where user_name='%3' and id_unique=%4\0")
+			.arg(i).arg(res2->getInt("id")).arg(user_name).arg(pok->get_unique_id()).toUtf8().data());
+		pok->need_update[i] = 0;
+	}
+	
+}
+
 void Handler::user_disconnect()
 {
 	stmt->executeUpdate(QString("update users set online=0 where user_name='%1' ").arg(user_name).toUtf8().data());
@@ -145,6 +210,10 @@ void Handler::get_string_from_socket(const QString & str)
 				emit string_to_socket_ready(QString("user %1 login success").arg(list.at(1)), 2);
 				emit string_to_socket_ready(QString("login****success****登录成功"), 1);
 				get_player_pokemons();
+
+				QString pokemon_str = QString::fromStdString(player.out_pokemon_info());
+				emit string_to_socket_ready(QString("query_pokemon****") + pokemon_str, 1);
+				send_battle_enemy();
 			}
 			else {
 				emit string_to_socket_ready("login failed wrong password ", 2);
@@ -175,6 +244,7 @@ void Handler::get_string_from_socket(const QString & str)
 			emit string_to_socket_ready(QString("user %1 register success").arg(list.at(1)), 2);
 			emit string_to_socket_ready(QString("register****success****恭喜您注册成功"),1);
 			put_three_pokemons_in_bag();
+			send_battle_enemy();
 		}
 	}
 	else if (mode == "query_player") {
@@ -190,7 +260,7 @@ void Handler::get_string_from_socket(const QString & str)
 		emit string_to_socket_ready(QString("user %1 query player success").arg(user_name), 2); 
 		emit string_to_socket_ready(res_str, 1);
 	}
-	else if (mode == "query_pokemon") {
+	else if (mode == "query_pokemon") {//移到了登陆成功
 		QString pokemon_str = QString::fromStdString(player.out_pokemon_info());
 		emit string_to_socket_ready(QString("query_pokemon****")+pokemon_str, 1);
 		emit string_to_socket_ready(QString("user %1 query pokemon success").arg(user_name), 2);
@@ -237,6 +307,20 @@ void Handler::get_string_from_socket(const QString & str)
 		QString str = QString("battle****")+QString::fromStdString(player.battle_test());
 		emit string_to_socket_ready(str, 1);
 		update_pokemon_sql();
+	}
+	else if (mode == "battle_levelup") {
+	QString str = QString("battle****");
+	QStringList unique_ids = list.at(1).split("###");
+	res = stmt->executeQuery(QString("select * from pokemon_user where user_name='%1' and id_unique =%2 \0").arg(AD_NAME).arg(unique_ids.at(1)).toUtf8().data());
+	if (res->next()) {
+		pokemon_base *enemy = res_to_pokemon(res);
+		pokemon_base *source = player.find_pok_by_unique(unique_ids.at(0).toInt());
+		str += QString::fromStdString( source->battle_with(enemy));
+		check_skill_update(source);
+		update_pokemon_sql();
+		emit string_to_socket_ready(str, 1);
+
+	}
 	}
 
 

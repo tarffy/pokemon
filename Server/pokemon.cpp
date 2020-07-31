@@ -99,6 +99,7 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 	int distence = 1000, source_distence = 0, enemy_distence = 0;
 	this->atti_reset();
 	enemy->atti_reset();
+
 	vector<int> &source_atti_z = this->get_attribute_z();
 	vector<int> &enemy_atti_z = enemy->get_attribute_z();
 	{
@@ -197,9 +198,16 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 	repo.append("FINAL");
 	repo.insert(0, to_string(win_flag) + string("###"));
 
-
-	string exp_and_level=this->get_exp(win_flag ? 150 : 50);
-	enemy->get_exp(win_flag ? 50 : 150);
+	need_update[1] = true;
+	int gain_exp;
+	if (win_flag) {
+		gain_exp = 80 + 20 * enemy->get_levels()[0]+ 10 * levels[0];
+	}
+	else {
+		gain_exp = 40 + 10 * levels[0];
+	}
+	string exp_and_level=this->get_exp(gain_exp);
+	//enemy->get_exp(win_flag ? 50 : 150);
 	repo.append(exp_and_level);
 	return repo;
 }
@@ -296,14 +304,15 @@ string pokemon_base::get_exp(int exp)
 {
 	string res = "****"+to_string(exp) + ",";
 	int tem = levels[0];
+	int count=0;
 	while (levels[1] + exp >= levels[2]) {
 		if (levels[0] == 15)break;
-		++levels[0]; 
 		exp = levels[1] + exp - levels[2];
 		levels[1] = 0;
-		levels[2] = levels[0] * 200;		//下一级升级经验
-		level_up();
+		levels[2] = levels[2] + 200;		//下一级升级经验
+		++count;
 	}
+	level_up(count);
 	levels[1] += exp;
 	res += (to_string(tem) +","+ to_string(levels[0])+",");
 	res += (to_string(levels[1]) + "," + to_string(levels[2])+",");
@@ -319,13 +328,27 @@ string pokemon_base::get_exp(int exp)
 	return res;
 }
 
-void pokemon_base::level_up()
+void pokemon_base::level_up(int num)
 {
-	int _class = attributes[7];
-	for (int i = 0; i < 6; i++) {
-		if (i == _class)attributes[i] += int(attributes[i] * 0.06);
-		else attributes[i] += int(attributes[i] * 0.05);
+	levels[0] += num;
+	if (levels[0] >= 5 && (!skills[1])) {
+		need_update[2] = 1;
 	}
+	if (skill_num>=3&& levels[0] >= 10 && (!skills[2])) {
+		need_update[3] = 1;
+	}
+	if (skill_num>=4&&levels[0] >= 15 && (!skills[3])) {
+		need_update[3] = 1;
+	}
+	int _class = attributes[7];
+	for (int j = 0; j < num; ++j) {
+		for (int i = 0; i < 6; i++) {
+			if (i == _class)attributes[i] += int(attributes[i] * 0.06);
+			else attributes[i] += int(attributes[i] * 0.05);
+		}
+		
+	}
+	
 	
 }
 
@@ -341,6 +364,21 @@ string pokemon_base::out_pokemon_info()
 	string res = pokemon_name + dot + to_string(this->get_rarity())+dot+to_string(unique_id)+dot+to_string(pokemon_id)+dot;
 	for (int i = 0; i < 8; i++)res.append(to_string(attributes[i] )+dot);
 	for (int i = 0; i < 3; i++)res.append(to_string(levels[i]) + dot);
-	
+	for (int i = 0; i < 4; i++) {
+		if (i < skill_num) {
+			if (skills[i])res.append(to_string(skills[i]->get_id()) + dot);
+			else res.append(to_string(-1) + dot);
+		}
+		else {
+			res.append(to_string(-1) + dot);
+		}
+	}
 	return res;
+}
+
+void pokemon_base::skill_cd_reset()
+{
+	for(auto &it:skills) {
+		if (it)it->cd_reset();
+	}
 }

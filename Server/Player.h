@@ -21,4 +21,6 @@ public:
 	int get_store_num() { return store_count; }
 	string battle_test();
 	void get_pokemon_update_string(pokemon_base*pok, string &res,int i);
+	pokemon_base *find_pok_by_unique(int id);
+	void server_handle();
 };

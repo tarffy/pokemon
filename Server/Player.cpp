@@ -99,7 +99,6 @@ unordered_map<int, string> Player::get_sql_update_info()
 
 string Player::battle_test()
 {
-	pokemon_bag[0]->need_update[1] = true;
 	pokemon_store[0]->need_update[1] = true;
 	return pokemon_bag[0]->battle_with(pokemon_store[0]);
 }
@@ -117,7 +116,7 @@ void Player::get_pokemon_update_string(pokemon_base *pok,string & res,int i)
 				res.append(to_string(i));
 				res.append(" ");
 				break;
-			case 1:
+			case 1: {
 				if (first)first = 0; else res.append(",");
 				auto atti = pok->get_attribute();
 				auto level = pok->get_levels();
@@ -129,13 +128,31 @@ void Player::get_pokemon_update_string(pokemon_base *pok,string & res,int i)
 				res.append(",exp_now="); res.append(to_string(level[1]));
 				res.append(",exp_levelup="); res.append(to_string(level[2]));
 				res.append(" ");
-				break;
+				break; }
 
 			}
 			pok->need_update[j] = false;
 		}
 }
+pokemon_base * Player::find_pok_by_unique(int id)
+{
+	for (int i = 0; i < bag_count; ++i) {
+		if (pokemon_bag[i]->get_unique_id() == id)return pokemon_bag[i];
+	}
+	for (int i = 0; i < store_count; ++i) {
+		if (pokemon_store[i]->get_unique_id() == id)return pokemon_store[i];
+	}
+	return nullptr;
+}
 
+void Player::server_handle()
+{
+	for (int i = 0; i < 10; i++) {
+		pokemon_store[i]->level_up(rand() % 15);
+		pokemon_store[i]->need_update[1] = 1;
+
+	}
+}
 
 
 

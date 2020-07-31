@@ -62,7 +62,7 @@ void Handler::excute_one_turn(const QString & input, QString & res)
 			QStringList sta = status.at(i).split(",");
 			QString str_res = skill_status_database[sta.at(0).toInt()];
 			for (int i = 1; i < sta.size(); ++i) {
-				res = str_res.arg(sta.at(i).toInt());
+				str_res = str_res.arg(sta.at(i).toInt());
 			}
 			res.append(str_res);
 		}
@@ -210,6 +210,10 @@ void Handler::handle_str_from_socket(const QString & str)
 			}
 			
 			emit repo_ready(repo);
+		}
+		else if (mode == "battle_pokemon") {
+			QStringList enemy_list = list.at(1).split("###");
+			emit enemy_list_ready(enemy_list);
 		}
 	}
 }

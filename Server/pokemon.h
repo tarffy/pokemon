@@ -17,7 +17,7 @@ class pokemon_base {
 	vector<skill_base*> skills;
 	string repo;
 public:
-	vector<bool> need_update;	//0位置 1经验等级
+	vector<bool> need_update;	//0位置 1经验等级 234技能
 	pokemon_base() { unique_id = -1; }
 	pokemon_base(const string &SQL_string) {};
 	pokemon_base(const string &name,const vector<int> &id,const vector<int> &attr, const vector<int> &level) 
@@ -25,7 +25,7 @@ public:
 		srand((unsigned int)time(0));
 		unique_id = id[0];
 		pokemon_id = id[1];
-		need_update.resize(2);//0位置 
+		need_update.resize(5);//0位置 
 		for (int i = 0; i < need_update.size(); ++i)need_update[i] = false;
 	};
 	string status_fresh();		//战斗录像 详细信息见文档
@@ -36,7 +36,7 @@ public:
 	string attack_turn(pokemon_base *enemy);//战斗双方其中一方的回合	
 	void atti_reset() { attributes_z = attributes; }//战斗前将状态重置
 	string get_exp(int exp);	//获取经验 升级会调用level_up
-	void level_up();		//升级 属性增长 可能会调用involve
+	void level_up(int num=1);		//升级 属性增长 可能会调用involve
 	void involve();
 	virtual string use_skills(pokemon_base *enemy) { return ""; }
 	void out_status();		//cout输出状态
@@ -58,6 +58,7 @@ public:
 	string out_pokemon_info();
 	int get_unique_id() { return unique_id; }
 	void set_unique_id(int num) { unique_id = num; }
+	void skill_cd_reset();
 };
 class pokemon_r:public pokemon_base
 {

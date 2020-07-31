@@ -25,5 +25,5 @@ signals:
 	void pokemon_info_ready(const QString &str);			//查询得到背包和仓库信息准备好
 	void player_pokemon_ready(const QString &str);
 	void repo_ready(const QStringList &list);
-	
+	void enemy_list_ready(const QStringList &list);
 };

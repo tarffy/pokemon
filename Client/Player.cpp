@@ -113,3 +113,15 @@ pokemon_base * Player::find_pok_by_unique(int id)
 	}
 	return nullptr;
 }
+
+int Player::get_unique_by_pos(int pos)
+{
+	int res;
+	if (pos >= 10) {
+		res = pokemon_store[pos - 10]->get_unique_id();
+	}
+	else {
+		res = pokemon_bag[pos]->get_unique_id();
+	}
+	return res;
+}

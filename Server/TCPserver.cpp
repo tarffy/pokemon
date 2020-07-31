@@ -5,6 +5,8 @@ TCPserver::TCPserver(QObject *parent)
 {
 	qRegisterMetaType<qintptr>("qintptr");
 	Handler handler;
+	handler.server_handler();
+	qDebug() << "Server running";
 }
 
 TCPserver::~TCPserver()
