@@ -15,7 +15,7 @@ public:
 	void put_three_pokemons_in_bag();	//注册成功时调用
 	void get_player_pokemons();			//登录成功后从SQL获取用户的精灵信息
 	pokemon_base *res_to_pokemon(sql::ResultSet *res);//将一条结果信息变成pokemon
-	pokemon_base* give_player_random_r(QString &info);
+	pokemon_base* give_player_random_r(QString &info,int choice=-1);
 	void update_pokemon_sql();
 	void server_handler();
 	void send_battle_enemy();	//登录注册后发送精灵给用户

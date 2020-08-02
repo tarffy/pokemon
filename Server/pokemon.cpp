@@ -39,31 +39,140 @@ string pokemon_base::status_fresh()
 		--it[1];
 		if (!it[1])to_delete.push_back(i.first);
 		switch (i.first) {
-		case 1: {
+		/*case 1: {
 			if (!it[1]) {
 				auto& atti_z = this->get_attribute_z();
 				atti_z[1] -= it[2];
 				atti_z[2] -= it[3];
 			}
 			break;
-		}
-		case 101: {
+		}*/
+
+		case 2: {//暴击 暴击率恢复
 			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[4] = it[2];
+
+			}
+			break;
+		}
+		case 3: {//buff buff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[1] -= it[2];
+				atti_z[3] -= it[3];
+			}
+			break;
+		}		
+		case 4: {//debuff debuff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[2] += it[3];
 				break;
 			}
 			attributes_z[0] -= it[2];
 			status_str.push_back(i.first);
 			status_str.push_back(it[2]);
-			//cout << "因为中毒受到了" << it[2] << "点伤害\n";
 			break;
 		}
-		case 102: {
+		case 5: {//buff buff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[2] -= it[2];
+				atti_z[5] -= it[3];
+			}
+			break;
+		}
+		case 10:{
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[1] -= it[2];
+				atti_z[3] = it[3];
+			}
+			break;
+				}
+		case 11: {//debuff debuff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[1] += it[3];
+				break;
+			}
+			attributes_z[0] -= it[2];
+			status_str.push_back(i.first);
+			status_str.push_back(it[2]);
+			break;
+		}
+		case 12: {//buff buff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[5] -= it[2];
+			}
+			break;
+		}
+		case 13: {//回血
+			if (!it[1]) {
+				break;
+			}
+			auto& atti_z = this->get_attribute_z();
+			atti_z[0] += it[2];
+			break;
+				 }
+		case 20: {//buff buff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[2] -= it[2];
+			}
+			break;
+		}
+		case 21: {//debuff debuff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[3] += it[3];
+				break;
+			}
+			attributes_z[0] -= it[2];
+			status_str.push_back(i.first);
+			status_str.push_back(it[2]);
+			break;
+		}
+		case 22: {
+			if (!it[1]) {
+				break;
+			}
+			auto& atti_z = this->get_attribute_z();
+			atti_z[0] += it[2];
+			break;
+		}
+		case 23: {//buff buff量恢复
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[2] -= it[2];
+				
+			}
+			break;
+		}
+		case 31: {//debuff debuff量恢复
 			if (!it[1]) {
 				auto& atti_z = this->get_attribute_z();
 				atti_z[2] += it[2];
 			}
 			break;
 		}
+		case 32:{
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[1] -= it[2];
+			}
+			break;
+		}
+		case 33:{
+			if (!it[1]) {
+				auto& atti_z = this->get_attribute_z();
+				atti_z[4] -= it[2];
+			}
+			break;
+		}
+
 		}
 		int size = static_cast<int>(status_str.size()) ;
 		if (size) {
@@ -99,7 +208,8 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 	int distence = 1000, source_distence = 0, enemy_distence = 0;
 	this->atti_reset();
 	enemy->atti_reset();
-
+	this->skill_cd_reset();
+	enemy->skill_cd_reset();
 	vector<int> &source_atti_z = this->get_attribute_z();
 	vector<int> &enemy_atti_z = enemy->get_attribute_z();
 	{
@@ -201,10 +311,10 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 	need_update[1] = true;
 	int gain_exp;
 	if (win_flag) {
-		gain_exp = 80 + 20 * enemy->get_levels()[0]+ 10 * levels[0];
+		gain_exp = 80 + 40 * enemy->get_levels()[0]+ 20 * levels[0];
 	}
 	else {
-		gain_exp = 40 + 10 * levels[0];
+		gain_exp = 40 + 20 * levels[0];
 	}
 	string exp_and_level=this->get_exp(gain_exp);
 	//enemy->get_exp(win_flag ? 50 : 150);

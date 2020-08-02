@@ -34,7 +34,6 @@ Client::Client(QWidget *parent)
 	connect(ui.Button_enter_battle, &QPushButton::clicked,  this, &Client::change_to_battle);
 
 	connect(ui.Button_return_menu1, &QPushButton::clicked, this, &Client::change_to_menu);
-	connect(ui.Button_battle1, &QToolButton::clicked, this, &Client::try_battle);
 	connect(handler, &Handler::repo_ready, this, &Client::show_repo);
 	connect(handler, &Handler::enemy_list_ready, this, &Client::show_enemy);
 	connect(ui.Button_battle_levelup, &QPushButton::clicked, this, &Client::battle_levelup);
@@ -163,6 +162,11 @@ void Client::put_pokemon_to_bag()
 
 void Client::try_query_player_pokemon()
 {
+	int num = ui.list_player_online->currentRow();
+	if (num == -1) {
+		QMessageBox::information(this, "提示", "未选择要查询的用户。");
+		return;
+	}
 	QString query_user_name = ui.list_player_online->currentItem()->text();
 	QString str = QString("query_player_pokemon****%1").arg(query_user_name);
 	socket->write(str.toUtf8());
@@ -188,11 +192,6 @@ void Client::try_fresh_pokemon()
 	socket->write(str.toUtf8());
 }
 
-void Client::try_battle()
-{
-	QString str = "battle****";
-	socket->write(str.toUtf8());
-}
 
 void Client::show_repo(const QStringList & list)
 {
@@ -202,9 +201,11 @@ void Client::show_repo(const QStringList & list)
 	for (int i = 0; i < list.size(); i++) {
 		
 		ui.Text_battle_2->append(list.at(i));
-		QTest::qWait(1000);
+		QTest::qWait(1500);
 	}
+	QTest::qWait(2000);
 	ui.Swidgt->setCurrentIndex(2);
+	
 }
 
 void Client::show_enemy(const QStringList & list)
@@ -220,7 +221,12 @@ void Client::battle_levelup()
 		QMessageBox::information(this, "提示", "未选择升级战对战精灵。");
 		return;
 	}
-	QString res = QString("battle_levelup****%1###%2").arg(handler->player.get_unique_by_pos(0)).arg(num);
+	int unique_id = handler->player.get_unique_by_pos(0);
+	if (unique_id == -1) {
+		QMessageBox::information(this, "提示", "背包里没有精灵。");
+		return;
+	}
+	QString res = QString("battle_levelup****%1###%2").arg(unique_id).arg(num);
 	socket->write(res.toUtf8());
 }
 

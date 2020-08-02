@@ -104,15 +104,29 @@ void Handler::excute_one_turn(const QString & input, QString & res)
 
 void Handler::database_init()
 {
-	skill_database[1] = pair<QString, QString>{ "龙之力", "攻击和防御小幅提升了" };
+	skill_database[2] = pair<QString, QString>{ "火舞", "下次攻击必定暴击。" };
+	skill_database[3] = pair<QString, QString>{ "狂热","攻击力提升20%，速度提升10%。" };
+	skill_database[4] = pair<QString, QString>{ "灼烧","使对方持续损失生命且防御力下降10%。" };
+	skill_database[5] = pair<QString, QString>{ "火焰盾","增加10%的防御和10%的闪避。" };
+	skill_database[10] = pair<QString, QString>{ "洪流","攻击力提升15%，并立刻发动下一次攻击。" };
+	skill_database[11] = pair<QString, QString>{ "极寒","使对方持续损失生命值且攻击力下降10%。" };
+	skill_database[12] = pair<QString, QString>{ "雾气弥漫","闪避几率提升20%。" };
+	skill_database[13] = pair<QString, QString>{ "湿润皮肤","每次行动回复5%的生命值。" };
+	skill_database[20] = pair<QString, QString>{ "扎根","恢复20%的生命值并增加20%防御。" };
+	skill_database[21] = pair<QString, QString>{ "猛毒素","使对方持续损失生命值且速度下降5%。" };
+	skill_database[22] = pair<QString, QString>{ " 寄生种子","每回合吸取对方4%的生命值。" };
+	skill_database[23] = pair<QString, QString>{ "光合作用","本次攻击，攻击力提升40%。" };
+	skill_database[30] = pair<QString, QString>{ "愈战愈勇","每次行动都会增加5%的攻击和防御。" };
+	skill_database[31] = pair<QString, QString>{ "破甲","降低对方20%防御力" };
+	skill_database[32] = pair<QString, QString>{ "剑舞","提升20%攻击力。" };
+	skill_database[33] = pair<QString, QString>{ "专注","提升10%暴击几率。" };
 
-	skill_database[101] = pair<QString, QString>{ "毒液攻击", "使对方中毒" };
-	skill_database[102] = pair<QString, QString>{ "护甲溶解", "使对方的防御大幅下降" };
 
-	skill_database[201] = pair<QString, QString>{ "净化之力", "消除所有负面状态" };
+	//skill_database[] = pair<QString, QString>{ "","" };
+	skill_status_database[4] = "因为灼烧受到了%1点伤害\n";
+	skill_status_database[11] = "因为极寒受到了%1点伤害\n";
+	skill_status_database[21] = "因为中毒受到了%1点伤害\n";
 
-	//skill_database[] = pair<QString, QString>{  };
-	skill_status_database[101] = "因为中毒受到了%1点伤害\n";
 }
 
 void Handler::handle_str_from_socket(const QString & str)

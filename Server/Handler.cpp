@@ -5,6 +5,7 @@ using std::string;
 Handler::Handler(QObject *parent)
 	: QObject(parent)
 {
+	srand(unsigned int(time(NULL)));
 	driver = sql::mysql::get_mysql_driver_instance();
 	if (driver == NULL) {
 		emit string_to_socket_ready(QString("Driver failed"), 2);
@@ -79,13 +80,17 @@ pokemon_base * Handler::res_to_pokemon(sql::ResultSet * res)
 	return pok;
 }
 
-pokemon_base* Handler::give_player_random_r(QString &info)
+pokemon_base* Handler::give_player_random_r(QString &info,int choic)
 {
 	pokemon_base *pok;
 	res= stmt->executeQuery(QString("select count(*) num from pokemon_base where rarity=1\0").toUtf8().data());
 	res->next();
 	int num = res->getInt("num");
-	res = stmt->executeQuery(QString("select * from pokemon_base limit 1 offset %1\0").arg(rand()%num).toUtf8().data());
+	int choice;
+	if(choic==-1)
+	 choice= rand() % num;
+	else choice = choic;
+	res = stmt->executeQuery(QString("select * from pokemon_base limit 1 offset %1\0").arg(choice).toUtf8().data());
 	if (res->next()) {
 		int skill_init = res->getInt("skill_init");
 		QString pokemon_info_sql = QString("('%1',%2,%3,'%4',%5,%6,%7,%8,%9,%10,%11,%12,%13,1,0,200,%14,%15,-1,-1,-1)")
@@ -136,12 +141,12 @@ void Handler::server_handler()
 	stmt->execute("delete from pokemon_user where user_name ='AFMowqmt1ga21'");
 	//stmt->execute("update users set next_unique = 0 where user_name='AFMowqmt1ga21'");
 	player.set_next_unique(0);
-	for (int i = 0; i < 10; ++i) {
-		give_player_random_r(a);
+	for (int i = 0; i < 20; ++i) {
+		give_player_random_r(a,i%3);
 	}
 	get_player_pokemons();
 	player.server_handle();
-	for (int i = 0; i < 10; i++)check_skill_update(player.find_pok_by_unique(i));
+	for (int i = 0; i < 20; i++)check_skill_update(player.find_pok_by_unique(i));
 	update_pokemon_sql();
 }
 
@@ -172,10 +177,19 @@ void Handler::check_skill_update(pokemon_base *pok)
 {
 	for(int i=2;i<=4;++i)
 	if (pok->need_update[i] == 1) {
-		res2 = stmt->executeQuery(QString("select count(*) num from skill\0").toUtf8().data());
+		QString query,rand_skill;
+		if (pok->get_attribute()[6] == 3) {
+			query = "select count(*) num from skill where type=3 and init=0";
+			rand_skill = "select * from skill where type=3 and init=0 limit 1 offset %1";
+		}
+		else {
+			query = QString("select count(*) num from skill where (type=3 or type=%1) and init=0").arg(pok->get_attribute()[6]);
+			rand_skill = QString("select * from skill where (type=3 or type=%1) and init=0 limit 1 offset %2").arg(pok->get_attribute()[6]);
+		}
+		res2 = stmt->executeQuery(query.toUtf8().data());
 		res2->next();
 		int skill_num = res2->getInt("num");
-		res2 = stmt->executeQuery(QString("select * from skill limit 1 offset %1\0").arg(rand() % skill_num).toUtf8().data());
+		res2 = stmt->executeQuery(rand_skill.arg(rand() % skill_num).toUtf8().data());
 		if (res2->next()) {
 			pok->set_skill(i-1, res2->getInt("id"), "", "", vector<int>{res2->getInt("arg1"), res2->getInt("arg2"), res2->getInt("arg3"), res2->getInt("arg4")});
 		}
@@ -244,6 +258,9 @@ void Handler::get_string_from_socket(const QString & str)
 			emit string_to_socket_ready(QString("user %1 register success").arg(list.at(1)), 2);
 			emit string_to_socket_ready(QString("register****success****恭喜您注册成功"),1);
 			put_three_pokemons_in_bag();
+			QString pokemon_str = QString::fromStdString(player.out_pokemon_info());
+			emit string_to_socket_ready(QString("query_pokemon****") + pokemon_str, 1);
+			
 			send_battle_enemy();
 		}
 	}
@@ -301,11 +318,6 @@ void Handler::get_string_from_socket(const QString & str)
 		for (int i = 0; i < baglist.size(); ++i)bag.push_back(baglist.at(i).toInt());
 		for (int i = 0; i < storelist.size(); ++i)store.push_back(storelist.at(i).toInt());
 		player.fresh_pokemon_pos(bag, store);
-		update_pokemon_sql();
-	}
-	else if (mode == "battle") {
-		QString str = QString("battle****")+QString::fromStdString(player.battle_test());
-		emit string_to_socket_ready(str, 1);
 		update_pokemon_sql();
 	}
 	else if (mode == "battle_levelup") {

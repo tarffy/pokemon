@@ -58,12 +58,139 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 
 	switch (this->get_id())
 	{
-	case 1: {
+		/*case 1: {
+			int attack_inc = int(1.0*skill_args[2] / 100 * source_atti[1]);
+			int defence_inc = int(1.0*skill_args[3] / 100 * source_atti[2]);
+			status_args1=vector<int>{ this->get_id(),skill_args[0],attack_inc,defence_inc };
+			source_atti_z[1] += attack_inc;
+			source_atti_z[2] += defence_inc;
+			status_add_flag1 = 1;
+			break;
+		}*/
+
+	case 2: {//暴击
+		int baoji = 100;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0], source_atti_z[4] };
+		source_atti_z[4] = 100;
+		status_add_flag1 = 1;
+		break;
+	}
+	case 3: {//强化
 		int attack_inc = int(1.0*skill_args[2] / 100 * source_atti[1]);
-		int defence_inc = int(1.0*skill_args[3] / 100 * source_atti[2]);
-		status_args1=vector<int>{ this->get_id(),skill_args[0],attack_inc,defence_inc };
+		int defence_inc = int(1.0*skill_args[3] / 100 * source_atti[3]);
 		source_atti_z[1] += attack_inc;
 		source_atti_z[2] += defence_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],attack_inc,defence_inc };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 4: {//持续debuff
+		int defence_descease = int(1.0*skill_args[3] / 100 * enemy_atti[2]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		enemy_atti_z[2] -= defence_descease;
+		status_args2 = vector<int>{ this->get_id(),skill_args[0],demage,defence_descease };
+		status_add_flag2 = 1;
+		break;
+	}
+	case 5:
+	{
+
+		int defence_inc = int(1.0*skill_args[2] / 100 * source_atti[2]);
+		int miss_inc = int(1.0*skill_args[3] / 100 * source_atti[5]);
+		source_atti_z[2] += defence_inc;
+		source_atti_z[5] += miss_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],defence_inc ,miss_inc };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 10: {
+		int attack_inc = int(1.0*skill_args[2] / 100 * source_atti[1]);
+		int speed = source_atti[3];
+		source_atti_z[1] += attack_inc;
+		source_atti_z[3] = 1000;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],attack_inc ,speed };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 11: {//持续debuff
+		int attack_descease = int(1.0*skill_args[3] / 100 * enemy_atti[1]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		enemy_atti_z[1] -= attack_descease;
+		status_args2 = vector<int>{ this->get_id(),skill_args[0],demage,attack_descease };
+		status_add_flag2 = 1;
+		break;
+	}
+	case 12: {
+		int miss_inc = skill_args[2];
+		source_atti_z[5] += miss_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],miss_inc };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 13: {
+		int recover = int(1.0*skill_args[2] * source_atti[0] / 100);
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],recover };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 20: {
+		int recover = int(1.0*skill_args[2] * source_atti[0] / 100);
+		source_atti_z[0] += recover;
+		int defence_inc = int(1.0*skill_args[3] / 100 * source_atti[2]);
+		source_atti_z[2] += defence_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],defence_inc };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 21: {//持续debuff
+		int speed_descease = int(1.0*skill_args[3] / 100 * enemy_atti[3]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		enemy_atti_z[3] -= speed_descease;
+		status_args2 = vector<int>{ this->get_id(),skill_args[0],demage,speed_descease };
+		status_add_flag2 = 1;
+		break;
+	}
+	case 22: {//持续debuff
+		
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],demage };
+		status_add_flag1 = 1;
+		status_args2 = vector<int>{ this->get_id(),skill_args[0],-demage};
+		status_add_flag2 = 1;
+		break;
+	}
+	case 23:{
+		int attack_inc = int(1.0*skill_args[2] / 100 * source_atti[1]);
+		source_atti_z[1] += attack_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],attack_inc };
+		status_add_flag1 = 1;
+		break;
+			 }
+	case 30: {
+		int attack_inc = int(1.0*skill_args[2] / 100 * source_atti[1]);
+		int defence_inc = int(1.0*skill_args[3] / 100 * source_atti[2]);
+		source_atti_z[1] += attack_inc;
+		source_atti_z[2] += defence_inc;
+		break;
+	}
+	case 31: {
+		int defence_descease = int(1.0*skill_args[2] / 100 * enemy_atti[2]);
+		enemy_atti_z[2] -= defence_descease;
+		status_args2 = vector<int>{ this->get_id(),skill_args[0],defence_descease };
+		status_add_flag2 = 1;
+		break;
+	}
+	case 32: {
+		int attack_inc = int(1.0*skill_args[2] / 100 * source_atti[1]);
+		source_atti_z[1] += attack_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],attack_inc };
+		status_add_flag1 = 1;
+		break;
+	}
+	case 33: {
+		int critical_inc = skill_args[2];
+		source_atti_z[4] += critical_inc;
+		status_args1 = vector<int>{ this->get_id(),skill_args[0],critical_inc };
 		status_add_flag1 = 1;
 		break;
 	}
@@ -80,7 +207,7 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 		status_add_flag2 = 1;
 		break;
 	}
-	case 201: {
+	/*case 201: {
 		vector<int> to_delete;
 		for (auto &it : source_status) {
 			if (it.first >= 101 && it.first <= 200) {
@@ -90,7 +217,7 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 		}
 		//for (auto &i : to_delete)source_status.erase(i);
 		break;
-	}
+	}*/
 	default:
 		break;
 		//cout << "No such skill!";

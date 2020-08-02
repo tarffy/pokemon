@@ -97,11 +97,7 @@ unordered_map<int, string> Player::get_sql_update_info()
 		return res;
 }
 
-string Player::battle_test()
-{
-	pokemon_store[0]->need_update[1] = true;
-	return pokemon_bag[0]->battle_with(pokemon_store[0]);
-}
+
 
 void Player::get_pokemon_update_string(pokemon_base *pok,string & res,int i)
 {
@@ -147,7 +143,7 @@ pokemon_base * Player::find_pok_by_unique(int id)
 
 void Player::server_handle()
 {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 20; i++) {
 		pokemon_store[i]->level_up(rand() % 15);
 		pokemon_store[i]->need_update[1] = 1;
 

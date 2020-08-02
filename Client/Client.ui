@@ -316,19 +316,6 @@
        </widget>
       </widget>
       <widget class="QWidget" name="page_battle">
-       <widget class="QToolButton" name="Button_battle1">
-        <property name="geometry">
-         <rect>
-          <x>580</x>
-          <y>150</y>
-          <width>101</width>
-          <height>101</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TEST</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="Button_return_menu1">
         <property name="geometry">
          <rect>
