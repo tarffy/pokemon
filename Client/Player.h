@@ -21,4 +21,5 @@ public:
 	string pokemon_pos();	//返回背包和仓库各位置的精灵unique id
 	pokemon_base *find_pok_by_unique(int id);
 	int get_unique_by_pos(int pos);
+	int delet_pok(int unique);
 };

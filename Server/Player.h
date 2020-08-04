@@ -23,4 +23,6 @@ public:
 	void get_pokemon_update_string(pokemon_base*pok, string &res,int i);
 	pokemon_base *find_pok_by_unique(int id);
 	void server_handle();
+	vector<int> three_unique_id();
+	void delet_pok(int unique);
 };

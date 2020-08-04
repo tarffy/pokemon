@@ -216,13 +216,25 @@ void Handler::handle_str_from_socket(const QString & str)
 				
 			}
 			else {
-				repo.append(QString("精灵升到%1级!\n").arg(exps[2]));
-				repo.append(QString("升级后属性：\nHP:%1 攻击:%2 防御:%3 速度:%4\n")
-					.arg(exps[5]).arg(exps[6]).arg(exps[7]).arg(exps[8]));
+				repo.append(QString("精灵升到%1级!\n升级后属性：\nHP:%2 攻击:%3 防御:%4 速度:%5\n")
+					.arg(exps[2]).arg(exps[5]).arg(exps[6]).arg(exps[7]).arg(exps[8]));
 				repo.append(QString("当前经验值:%1,升级需要经验值:%2。\n").arg(exps[3]).arg(exps[4]));
 				
 			}
-			
+			if (list.at(3) != "-1") {
+				QStringList three = list.at(3).split(",");
+				if (three.size() == 1) {
+					repo.append("决胜赛获胜，恭喜获得该精灵\n");
+					repo.append("0");
+				}
+				else {
+					repo.append("决胜赛失败，你必须送出一个精灵。\n");
+					repo.append("1,"+list.at(3));
+				}
+			}
+			else {
+				repo.append("0");
+			}
 			emit repo_ready(repo);
 		}
 		else if (mode == "battle_pokemon") {

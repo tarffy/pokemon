@@ -58,6 +58,8 @@ public:
 	string out_pokemon_info();
 	int get_unique_id() { return unique_id; }
 	void set_unique_id(int num) { unique_id = num; }
+	int get_pokemon_id() { return pokemon_id; }
+
 	void skill_cd_reset();
 };
 class pokemon_r:public pokemon_base

@@ -6,6 +6,8 @@
 class Handler : public QObject
 {
 	Q_OBJECT	
+private:
+
 public:
 	Handler(QObject *parent=NULL);
 	Player player;

@@ -18,6 +18,7 @@ private:
 	Handler *handler;
 	int get_pokemon = 1;
 	QString user_name;
+	int first_, second_, third_;
 public:
 	void try_query_pokemon_info();
 signals:
@@ -31,6 +32,7 @@ public slots:
 	void change_to_query();		//切换到查询界面
 	void change_to_pokemon();	//切换到精灵界面
 	void change_to_gacha();
+	void change_to_send_pok();
 	void try_query_player_online();	//查询在线的玩家
 	void show_query_player_result(const QString &str);	//根据查询结果 显示在线的玩家
 	void show_pokemon_info(const QString &str);		//根据返回结果显示背包和仓库内的精灵
@@ -44,4 +46,6 @@ public slots:
 	void show_repo(const QStringList &list);
 	void show_enemy(const QStringList &list);
 	void battle_levelup();
+	void battle_duel();
+	void try_send_pok();
 };

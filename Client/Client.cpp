@@ -32,11 +32,14 @@ Client::Client(QWidget *parent)
 	connect(ui.Button_logout, &QPushButton::clicked, this, &QWidget::close);
 	//战斗页
 	connect(ui.Button_enter_battle, &QPushButton::clicked,  this, &Client::change_to_battle);
-
 	connect(ui.Button_return_menu1, &QPushButton::clicked, this, &Client::change_to_menu);
-	connect(handler, &Handler::repo_ready, this, &Client::show_repo);
 	connect(handler, &Handler::enemy_list_ready, this, &Client::show_enemy);
+	connect(handler, &Handler::repo_ready, this, &Client::show_repo);
 	connect(ui.Button_battle_levelup, &QPushButton::clicked, this, &Client::battle_levelup);
+	connect(ui.Button_battle_duel, &QPushButton::clicked, this, &Client::battle_duel);
+	connect(ui.Button_send_pokemon1, &QPushButton::clicked, this, &Client::try_send_pok);
+	connect(ui.Button_send_pokemon2, &QPushButton::clicked, this, &Client::try_send_pok);
+	connect(ui.Button_send_pokemon3, &QPushButton::clicked, this, &Client::try_send_pok);
 	//查询页
 	connect(ui.Button_query, &QPushButton::clicked, this, &Client::change_to_query);
 	connect(ui.Button_return_menu2, &QPushButton::clicked, this, &Client::change_to_menu);
@@ -98,6 +101,11 @@ void Client::change_to_pokemon()
 void Client::change_to_gacha()
 {
 	ui.Swidgt->setCurrentIndex(5);
+}
+
+void Client::change_to_send_pok()
+{
+	ui.Swidgt->setCurrentIndex(7);
 }
 
 void Client::show_pokemon_info(const QString &str)
@@ -198,13 +206,36 @@ void Client::show_repo(const QStringList & list)
 	
 	ui.Text_battle_2->clear();
 	ui.Swidgt->setCurrentIndex(6);
-	for (int i = 0; i < list.size(); i++) {
+	for (int i = 0; i < list.size()-1; i++) {
 		
 		ui.Text_battle_2->append(list.at(i));
 		QTest::qWait(1500);
 	}
 	QTest::qWait(2000);
-	ui.Swidgt->setCurrentIndex(2);
+	if (list.at(list.size() - 1)[0] == '1') {
+		ui.Button_send_pokemon1->show();
+		ui.Button_send_pokemon2->show();
+		ui.Button_send_pokemon3->show();
+		ui.label_send_pokemon1->clear();
+		ui.label_send_pokemon2->clear();
+		ui.label_send_pokemon3->clear();
+		QStringList send_three = list.at(list.size() - 1).split(",");
+		first_ = send_three[1].toInt();
+		second_ = send_three[2].toInt();
+		third_ = send_three[3].toInt();
+		pokemon_base *pok1 = handler->player.find_pok_by_unique(first_);
+		pokemon_base *pok2 = handler->player.find_pok_by_unique(second_);
+		pokemon_base *pok3 = handler->player.find_pok_by_unique(third_);
+		if (pok1)ui.label_send_pokemon1->setText(QString::fromStdString(pok1->get_name_and_level()));
+		else ui.Button_send_pokemon1->hide();
+		if (pok2)ui.label_send_pokemon2->setText(QString::fromStdString(pok2->get_name_and_level()));
+		else ui.Button_send_pokemon2->hide();
+		if (pok3)ui.label_send_pokemon3->setText(QString::fromStdString(pok3->get_name_and_level()));
+		else ui.Button_send_pokemon3->hide();
+		change_to_send_pok();
+		return;
+	}
+	change_to_battle();
 	
 }
 
@@ -228,6 +259,49 @@ void Client::battle_levelup()
 	}
 	QString res = QString("battle_levelup****%1###%2").arg(unique_id).arg(num);
 	socket->write(res.toUtf8());
+}
+
+void Client::battle_duel()
+{
+	int num = ui.list_battle_enemy->currentRow();
+	if (num == -1) {
+		QMessageBox::information(this, "提示", "未选择升级战对战精灵。");
+		return;
+	}
+	int unique_id = handler->player.get_unique_by_pos(0);
+	if (unique_id == -1) {
+		QMessageBox::information(this, "提示", "背包里没有精灵。");
+		return;
+	}
+	QString res = QString("battle_duel****%1###%2").arg(unique_id).arg(num);
+	socket->write(res.toUtf8());
+}
+
+void Client::try_send_pok()
+{
+	QString send_pok = "send_pok****";
+	int choice;
+	if (sender() == ui.Button_send_pokemon1) {
+		send_pok += QString("%1").arg(first_);
+		choice = first_;
+	}
+	else if (sender() == ui.Button_send_pokemon2) {
+		send_pok += QString("%1").arg(second_);
+		choice = second_;
+	}
+	else {
+		send_pok += QString("%1").arg(third_);
+		choice = third_;
+	}
+	int pos=handler->player.delet_pok(choice);
+	if (pos >= 10) {
+		ui.list_pokemon_store->takeItem(pos - 10);
+	}
+	else {
+		ui.list_pokemon_bag->takeItem(pos);
+	}
+	socket->write(send_pok.toUtf8());
+	change_to_battle();
 }
 
 

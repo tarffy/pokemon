@@ -68,6 +68,7 @@ void Player::move_to_bag(int store_num)
 	for (int i = store_num; i < store_count-1; i++) {
 		pokemon_store[i] = pokemon_store[i+1];
 	}
+	pokemon_store[store_count - 1] = nullptr;
 	--store_count;
 }
 
@@ -81,6 +82,7 @@ void Player::move_to_store(int bag_num)
 	for (int i = bag_num; i < bag_count - 1; i++) {
 		pokemon_bag[i] = pokemon_bag[i + 1];
 	}
+	pokemon_bag[bag_count - 1] = nullptr;
 	--bag_count;
 }
 
@@ -126,4 +128,30 @@ int Player::get_unique_by_pos(int pos)
 		res = pokemon_bag[pos]->get_unique_id();
 	}
 	return res;
+}
+int Player::delet_pok(int unique)
+{
+	for (int i = 0; i < bag_count; ++i) {
+		if (pokemon_bag[i]->get_unique_id() == unique) {
+
+			for (int j = i; j < bag_count - 1; j++) {
+				pokemon_bag[j] = pokemon_bag[j + 1];
+				
+			}pokemon_bag[bag_count - 1] = nullptr;
+			bag_count--;
+
+			return i;
+		}
+	}
+	for (int i = 0; i < store_count; ++i) {
+		if (pokemon_store[i]->get_unique_id() == unique) {
+			for (int j = i; j < bag_count - 1; j++) {
+				pokemon_store[j] = pokemon_store[j + 1];
+			}
+			pokemon_store[store_count - 1] = nullptr;
+			store_count--;
+			return i+10;
+		}
+	}
+	return -1;
 }

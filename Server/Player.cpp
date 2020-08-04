@@ -150,6 +150,75 @@ void Player::server_handle()
 	}
 }
 
+vector<int> Player::three_unique_id()
+{
+	int sum = store_count + bag_count;
+	vector<int> result;
+	if (sum <= 3) {
+		for (int i = 0; i < bag_count; ++i)result.push_back(pokemon_bag[i]->get_unique_id());
+		for (int i = 0; i < store_count; ++i)result.push_back(pokemon_store[i]->get_unique_id());
+		if (sum == 2) {
+			result.push_back(-1);
+		}
+		else if (sum == 1) {
+			result.push_back(-1);
+			result.push_back(-1);
+		}
+		else if (sum == 0) {
+			result = { -1,-1,-1 };
+		}
+		
+	}
+	else {
+		int first, second, third;
+		if (store_count >= 2) {
+			first = pokemon_store[rand() % store_count]->get_unique_id();
+			second= pokemon_store[rand() % store_count]->get_unique_id();
+			while (second == first)second = pokemon_store[rand() % store_count]->get_unique_id();
+			third =pokemon_bag[rand() % bag_count]->get_unique_id();
+		}
+		else if (store_count == 1) {
+			first = pokemon_store[0]->get_unique_id();
+			second= pokemon_bag[rand() % bag_count]->get_unique_id();
+			third = pokemon_bag[rand() % bag_count]->get_unique_id();
+			while(second==third)third = pokemon_bag[rand() % bag_count]->get_unique_id();
+		}
+		else {
+			first= pokemon_bag[rand() % bag_count]->get_unique_id();
+			second= pokemon_bag[rand() % bag_count]->get_unique_id();
+			while(second==first)second = pokemon_bag[rand() % bag_count]->get_unique_id();
+			third =  pokemon_bag[rand() % bag_count]->get_unique_id();
+			while(third==first||third==second)third = pokemon_bag[rand() % bag_count]->get_unique_id();
+		}
+		result = { first,second,third };
+	}
+
+	return result;
+}
+
+void Player::delet_pok(int unique)
+{
+	for (int i = 0; i < bag_count; ++i) {
+		if (pokemon_bag[i]->get_unique_id() == unique) {
+			
+			for (int j = i; j < bag_count-1; j++) {
+				pokemon_bag[j] = pokemon_bag[j + 1];
+			}
+			bag_count--;
+			return;
+		}
+	}
+	for (int i = 0; i < store_count; ++i) {
+		if (pokemon_store[i]->get_unique_id() == unique) {
+			for (int j = i; j < bag_count - 1; j++) {
+				pokemon_store[j] = pokemon_store[j + 1];
+			}
+			store_count--;
+			return;
+		}
+	}
+}
+
 
 
 

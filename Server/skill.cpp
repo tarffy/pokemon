@@ -152,7 +152,7 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 	}
 	case 22: {//持续debuff
 		
-		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]/100);
 		status_args1 = vector<int>{ this->get_id(),skill_args[0],demage };
 		status_add_flag1 = 1;
 		status_args2 = vector<int>{ this->get_id(),skill_args[0],-demage};

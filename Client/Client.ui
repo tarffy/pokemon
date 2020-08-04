@@ -314,6 +314,19 @@
          <string>抽奖</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="Button_fresh_medal">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>290</y>
+          <width>171</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>刷新勋章状态</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_battle">
        <widget class="QPushButton" name="Button_return_menu1">
@@ -358,6 +371,19 @@
         </property>
         <property name="text">
          <string>升级战</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="Button_battle_duel">
+        <property name="geometry">
+         <rect>
+          <x>560</x>
+          <y>150</y>
+          <width>171</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>决斗战</string>
         </property>
        </widget>
       </widget>
@@ -758,6 +784,138 @@
         </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="page_send_pokemon">
+       <widget class="QWidget" name="widget_9" native="true">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>110</y>
+          <width>261</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_send_pokemon1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="Button_send_pokemon1">
+           <property name="text">
+            <string>选择</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="widget_10" native="true">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>110</y>
+          <width>261</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_send_pokemon2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="Button_send_pokemon2">
+           <property name="text">
+            <string>选择</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="widget_11" native="true">
+        <property name="geometry">
+         <rect>
+          <x>630</x>
+          <y>110</y>
+          <width>261</width>
+          <height>291</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_10">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_send_pokemon3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="Button_send_pokemon3">
+           <property name="text">
+            <string>选择</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>30</y>
+          <width>361</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>请选择送出的精灵</string>
         </property>
        </widget>
       </widget>
