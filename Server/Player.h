@@ -25,4 +25,5 @@ public:
 	void server_handle();
 	vector<int> three_unique_id();
 	void delet_pok(int unique);
+	int fresh_madels();//刷新徽章信息
 };

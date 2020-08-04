@@ -21,6 +21,9 @@ public:
 	void send_battle_enemy();	//登录注册后发送精灵给用户
 	void check_skill_update(pokemon_base *pok);
 	void insert_pok_to_sql(pokemon_base *pok);
+	QString get_player_sql_info(const QString &user_name_);
+	void update_sql_battle_num(int win_flag);
+	void fresh_player_madels();
 private:
 	QString user_name;
 	sql::mysql::MySQL_Driver *driver;		//mysql驱动
@@ -30,6 +33,8 @@ private:
 	sql::ResultSet *res2;					//结果集
 	Player player;
 	int no_pokemon = 0;
+	int battle_num, battle_win;
+	int madels_poknum, madels_pokh;
 public slots:
 	//将socket传给handler的str进行处理 处理后触发string_to_socket_ready信号
 	void get_string_from_socket(const QString &str);	

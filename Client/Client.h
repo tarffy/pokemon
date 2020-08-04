@@ -19,6 +19,8 @@ private:
 	int get_pokemon = 1;
 	QString user_name;
 	int first_, second_, third_;
+	int battle_num, battle_win;
+	vector<bool> madels;
 public:
 	void try_query_pokemon_info();
 signals:
@@ -41,11 +43,13 @@ public slots:
 	void put_pokemon_to_store();
 	void put_pokemon_to_bag();
 	void try_query_player_pokemon();
-	void show_query_player_pokemon(const QString &str);
+	void show_query_player_pokemon(const QStringList &list);
 	void try_fresh_pokemon();
 	void show_repo(const QStringList &list);
 	void show_enemy(const QStringList &list);
 	void battle_levelup();
 	void battle_duel();
 	void try_send_pok();
+	void try_fresh_player();
+	void show_player_info(const QString &str);
 };

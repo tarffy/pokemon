@@ -219,6 +219,33 @@ void Player::delet_pok(int unique)
 	}
 }
 
+int Player::fresh_madels()
+{
+	int res=0;
+	int poknum = store_count + bag_count;
+	int pokh=0;
+	for (int i = 0; i < bag_count; i++) {
+		if (pokemon_bag[i]->get_levels()[0] == 15)pokh++;
+	}
+	for (int i = 0; i < store_count; i++) {
+		if (pokemon_store[i]->get_levels()[0] == 15)pokh++;
+	}
+	if (poknum >= 50)
+		res += 70;
+	else if (poknum >= 30) 
+		res += 30;
+	else if (poknum >= 10) 
+		res += 10;
+	if (pokh >= 12)
+		res += 7;
+	else if (pokh >= 8) 
+		res += 3;
+	
+	else if (pokh >= 4) 
+		res += 1;
+	return res;
+}
+
 
 
 

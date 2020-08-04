@@ -172,7 +172,7 @@ void Handler::handle_str_from_socket(const QString & str)
 			
 		}
 		else if (mode=="query_player_pokemon") {//精灵以###隔开 名字登记,unique id
-			emit player_pokemon_ready(list.at(1));
+			emit player_pokemon_ready(list);
 		}
 		else if (mode == "add_pokemon") {
 			player.put_pokemon_in_store(string_to_pokemon(list.at(1)));
@@ -240,6 +240,9 @@ void Handler::handle_str_from_socket(const QString & str)
 		else if (mode == "battle_pokemon") {
 			QStringList enemy_list = list.at(1).split("###");
 			emit enemy_list_ready(enemy_list);
+		}
+		else if (mode == "player_info") {
+		emit player_info_ready(list.at(1));
 		}
 	}
 }

@@ -13,6 +13,7 @@ Client::Client(QWidget *parent)
 	else {
 		qDebug() << "TCP connect failed";
 		QMessageBox::information(this, "提示", "无法连接到服务器!");
+		QWidget::close();
 	}
 	connect(socket, &QTcpSocket::readyRead, this, &Client::read_from_socket);
 
@@ -30,6 +31,9 @@ Client::Client(QWidget *parent)
 	connect(ui.button_register, &QPushButton::clicked, this, &Client::try_register);
 	//菜单页
 	connect(ui.Button_logout, &QPushButton::clicked, this, &QWidget::close);
+	connect(ui.Button_fresh_player, &QPushButton::clicked, this, &Client::try_fresh_player);
+	connect(handler, &Handler::player_info_ready, this, &Client::show_player_info);
+
 	//战斗页
 	connect(ui.Button_enter_battle, &QPushButton::clicked,  this, &Client::change_to_battle);
 	connect(ui.Button_return_menu1, &QPushButton::clicked, this, &Client::change_to_menu);
@@ -126,7 +130,7 @@ void Client::show_pokemon_info(const QString &str)
 void Client::register_or_login_success_slot(const QString &str)
 {
 		QMessageBox::information(this, "提示", str);
-		ui.label_menu_info->setText(QString("用户名:%1\n勋章：没").arg(user_name));
+		
 		change_to_menu();
 		
 }
@@ -180,16 +184,24 @@ void Client::try_query_player_pokemon()
 	socket->write(str.toUtf8());
 }
 
-void Client::show_query_player_pokemon(const QString &str)
+void Client::show_query_player_pokemon(const QStringList &list)
 {
 	ui.list_player_pokemon->clear();
+	QStringList win_list = list.at(3).split(",");
+	int tem_battle_num = win_list[0].toInt();
+	int tem_battle_win = win_list[1].toInt();
+	double win_rate = battle_num == 0 ? 0 : 1.0*tem_battle_win / tem_battle_num;
+	QString player_info = QString("用户名:%1\n战斗场次:%2 胜场数:%3 胜率:%4%")
+		.arg(ui.list_player_online->currentItem()->text()).arg(tem_battle_num).arg(tem_battle_win).arg(win_rate * 100);
+	ui.list_player_pokemon->addItem(player_info);
+	QString str = list.at(1);
 	if (str == "-1") { 
 		ui.list_player_pokemon->addItem("用户无精灵"); 
 		return;
 	}
-	QStringList list = str.split("###");
+	QStringList pok_list = str.split("###");
 	for (int i = 0; i < list.size(); i++) {
-		ui.list_player_pokemon->addItem(list[i].split(",").at(0));
+		ui.list_player_pokemon->addItem(pok_list[i].split(",").at(0));
 	}
 }
 
@@ -302,6 +314,42 @@ void Client::try_send_pok()
 	}
 	socket->write(send_pok.toUtf8());
 	change_to_battle();
+}
+
+void Client::try_fresh_player()
+{
+	QString str_res = QString("fresh_player_info****");
+	socket->write(str_res.toUtf8());
+}
+
+void Client::show_player_info(const QString & str)
+{
+	QStringList player_info = str.split(",");
+	battle_num = player_info[0].toInt();
+	battle_win = player_info[1].toInt();
+	int madels_num = player_info[2].toInt();
+	int madels_pokh = player_info[3].toInt();
+	double win_rate = battle_num == 0 ? 0 : 1.0*battle_win / battle_num;
+	QString label_test = QString("用户名:%1\n战斗场次:%2 胜场数:%3 胜率:%4%\n勋章:\n")
+		.arg(user_name).arg(battle_num).arg(battle_win).arg(win_rate*100);
+	QString madels;
+	switch (madels_num)
+	{
+	case 7:madels.append("金宠物个数徽章\t");
+	case 3:madels.append("银宠物个数徽章\t");
+	case 1:madels.append("铜宠物个数徽章\t");
+		madels.append("\n");
+	default:break;
+	}
+	switch (madels_pokh)
+	{
+	case 7:madels.append("金高级宠物徽章\t");
+	case 3:madels.append("银高级宠物徽章\t");
+	case 1:madels.append("铜高级宠物徽章\t");
+		default:break;
+	}
+	label_test.append(madels);
+	ui.label_menu_info->setText(label_test);
 }
 
 

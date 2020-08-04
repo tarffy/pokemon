@@ -228,6 +228,42 @@ void Handler::insert_pok_to_sql(pokemon_base * pok)
 	stmt->executeUpdate(QString("update users set next_unique=%1 where user_name='%2'").arg(player.get_next_unique()).arg(user_name).toUtf8().data());
 }
 
+QString Handler::get_player_sql_info(const QString &user_name_)
+{
+	
+	res = stmt->executeQuery(QString("select * from users where user_name='%1'\0").arg(user_name_).toUtf8().data());
+	res->next();
+	battle_num = res->getInt("battle_num");
+	battle_win = res->getInt("battle_win");
+	madels_poknum = res->getInt("madels_poknum");
+	madels_pokh = res->getInt("madels_pokh");
+	QString str_res = QString("player_info****%1,%2,%3,%4").arg(battle_num)
+		.arg(battle_win).arg(madels_poknum).arg(madels_pokh);
+	return str_res;
+}
+
+void Handler::update_sql_battle_num(int win_flag)
+{
+	battle_num++;
+	battle_win += win_flag;
+	stmt->executeUpdate(QString("update users set battle_num=%1,battle_win=%2\0").arg(battle_num).arg(battle_win).toUtf8().data());
+}
+
+void Handler::fresh_player_madels()
+{
+	int medal_status=player.fresh_madels();
+	int tem_madels_poknum = medal_status / 10;
+	int tem_madels_pokh = medal_status % 10;
+	if (tem_madels_poknum > madels_poknum) {
+		stmt->executeUpdate(QString("update users set madels_poknum=%1 where user_name=%2\0").arg(tem_madels_poknum).arg(user_name).toUtf8().data());
+		madels_poknum = tem_madels_poknum;
+	}
+	if (tem_madels_pokh > madels_pokh) {
+		stmt->executeUpdate(QString("update users set madels_pokh=%1 where user_name=%2\0").arg(tem_madels_pokh).arg(user_name).toUtf8().data());
+		madels_pokh = tem_madels_pokh;
+	}
+}
+
 void Handler::user_disconnect()
 {
 	stmt->executeUpdate(QString("update users set online=0 where user_name='%1' ").arg(user_name).toUtf8().data());
@@ -252,7 +288,8 @@ void Handler::get_string_from_socket(const QString & str)
 				emit string_to_socket_ready(QString("user %1 login success").arg(list.at(1)), 2);
 				emit string_to_socket_ready(QString("login****success****登录成功"), 1);
 				get_player_pokemons();
-
+				QString player_info = get_player_sql_info(user_name);
+				emit string_to_socket_ready(player_info, 1);//player_info
 				QString pokemon_str = QString::fromStdString(player.out_pokemon_info());
 				emit string_to_socket_ready(QString("query_pokemon****") + pokemon_str, 1);
 				send_battle_enemy();
@@ -279,7 +316,7 @@ void Handler::get_string_from_socket(const QString & str)
 			emit string_to_socket_ready(QString("register****fail****用户名%1已被注册，请换用户名重新注册。").arg(list.at(1)), 1);
 		}
 		else {
-			stmt->executeUpdate(QString("insert into users (user_name,password,online,next_unique) values ('%1','%2',1,3)").arg(list.at(1)).arg(list.at(2)).toUtf8().data());
+			stmt->executeUpdate(QString("insert into users values ('%1','%2',1,0,0,3,0,0)").arg(list.at(1)).arg(list.at(2)).toUtf8().data());
 			user_name = list.at(1);
 			player.set_user_name(user_name.toStdString());
 
@@ -288,7 +325,7 @@ void Handler::get_string_from_socket(const QString & str)
 			put_three_pokemons_in_bag();
 			QString pokemon_str = QString::fromStdString(player.out_pokemon_info());
 			emit string_to_socket_ready(QString("query_pokemon****") + pokemon_str, 1);
-
+			emit string_to_socket_ready(QString("player_info****0,0,0,0"), 1);//player_info
 			send_battle_enemy();
 		}
 	}
@@ -320,6 +357,8 @@ void Handler::get_string_from_socket(const QString & str)
 			query_res.append(QString("lv.%1,%2").arg(res->getInt("level")).arg(res->getInt("id_unique")));
 		}
 		if (flag)query_res.append("-1");
+		QString win_madel = get_player_sql_info(list.at(1));
+		query_res.append("****" + win_madel);
 		emit string_to_socket_ready(query_res, 1);
 		emit string_to_socket_ready(QString("%1 query %2 success").arg(user_name).arg(list.at(1)), 2);
 	}
@@ -356,6 +395,8 @@ void Handler::get_string_from_socket(const QString & str)
 			pokemon_base *enemy = res_to_pokemon(res);
 			pokemon_base *source = player.find_pok_by_unique(unique_ids.at(0).toInt());
 			str += QString::fromStdString(source->battle_with(enemy));
+			int win_flag = str.split("****").at(1).split("###").at(0).toInt();
+			update_sql_battle_num(win_flag);
 			str += "****-1";
 			check_skill_update(source);
 			update_pokemon_sql();
@@ -372,7 +413,7 @@ void Handler::get_string_from_socket(const QString & str)
 			pokemon_base *source = player.find_pok_by_unique(unique_ids.at(0).toInt());
 			str += QString::fromStdString(source->battle_with(enemy));
 			int win_flag = str.split("****").at(1).split("###").at(0).toInt();
-
+			update_sql_battle_num(win_flag);
 			if (win_flag) {
 				QString pokemon_str = QString("add_pokemon****") + QString::fromStdString(enemy->out_pokemon_info());
 				emit string_to_socket_ready(pokemon_str, 1);
@@ -407,5 +448,10 @@ void Handler::get_string_from_socket(const QString & str)
 		}
 
 
+	}
+	else if (mode == "fresh_player_info") {
+		fresh_player_madels();
+		QString res_str = get_player_sql_info(user_name);
+		emit string_to_socket_ready(res_str, 1);
 	}
 }

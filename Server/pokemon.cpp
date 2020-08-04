@@ -440,6 +440,7 @@ string pokemon_base::get_exp(int exp)
 
 void pokemon_base::level_up(int num)
 {
+	levels[2] = levels[0] * 200;//Server生成的精灵直接调用此函数导致升级经验有误
 	levels[0] += num;
 	if (levels[0] >= 5 && (!skills[1])) {
 		need_update[2] = 1;
