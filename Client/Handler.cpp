@@ -127,6 +127,10 @@ void Handler::database_init()
 	skill_status_database[11] = "因为极寒受到了%1点伤害\n";
 	skill_status_database[21] = "因为中毒受到了%1点伤害\n";
 
+	pok_names[1] = "巴鲁斯";
+	pok_names[2] = "火爆猴";
+	pok_names[3] = "步步种子";
+	//pok_names[] = "";
 }
 
 void Handler::handle_str_from_socket(const QString & str)
@@ -183,19 +187,23 @@ void Handler::handle_str_from_socket(const QString & str)
 			QStringList repo;			
 			QStringList turns = list.at(1).split("###");
 			int win_flag = turns.at(0).toInt();	//1为获胜
-
-			QString start;
+			QStringList pok_ids = turns.at(2).split(",");
+			QString start;	//at(1)
 			QStringList pokemon_status = turns.at(1).split("<>");
 			for (int i = 0; i < 2; i++) {
 				QStringList atti = pokemon_status.at(i).split(",");
-				if (i)start.append("对方精灵属性:\n");
-				else start.append("我方精灵属性:\n");
-				start.append(QString("HP:%1 攻击:%2 防御:%3 速度:%4 暴击率:%5% 闪避率:%6%\n")
+				if (i)start.append(QString("%1 lv.%2\n").arg(pok_names[pok_ids[3].toInt()]).arg(pok_ids[5].toInt()));
+				else start.append(QString("%1 lv.%2\n").arg(pok_names[pok_ids[2].toInt()]).arg(pok_ids[4].toInt()));
+				start.append(QString("HP:%1 攻击:%2 防御:%3\n速度:%4 暴击率:%5% 闪避率:%6%\n")
 					.arg(atti.at(0)).arg(atti.at(1)).arg(atti.at(2)).arg(atti.at(3)).arg(atti.at(4)).arg(atti.at(5)));
+				start.append("<>");
 			}
 			repo.append(start);
-
-			pokemon_base *pok = player.find_pok_by_unique(turns.at(2).toInt());
+			
+			pokemon_base *pok = player.find_pok_by_unique(pok_ids[0].toInt());
+			repo.append(QString("%1,%2").arg(pok_ids[2].toInt()).arg(pok_ids[3].toInt()));
+			
+			
 
 			for (int i = 3; i < turns.size()-1; i++) {
 				QString turn;

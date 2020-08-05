@@ -16,6 +16,7 @@ public:
 	void excute_one_turn(const QString &input, QString &res);
 	unordered_map<int, pair<QString, QString> >skill_database;
 	unordered_map<int,  QString >skill_status_database;
+	unordered_map<int, QString >pok_names;
 	void database_init();
 public slots:
 	void handle_str_from_socket(const QString &str);		//处理socket读到的string

@@ -225,7 +225,9 @@ string pokemon_base::battle_with(pokemon_base * enemy)
 		}
 		repo.append(atti_str);
 		repo.append("###"); 
-		repo.append(to_string(unique_id));
+		repo.append(to_string(unique_id)+","+to_string(enemy->get_unique_id())+",");
+		repo.append(to_string(pokemon_id) + "," + to_string(enemy->get_pokemon_id()));
+		repo.append("," + to_string(this->get_levels()[0]) + ","+to_string(enemy->get_levels()[0]));
 		repo.append("###");
 	}
 	int battle_continue = 1, win_flag;

@@ -255,11 +255,11 @@ void Handler::fresh_player_madels()
 	int tem_madels_poknum = medal_status / 10;
 	int tem_madels_pokh = medal_status % 10;
 	if (tem_madels_poknum > madels_poknum) {
-		stmt->executeUpdate(QString("update users set madels_poknum=%1 where user_name=%2\0").arg(tem_madels_poknum).arg(user_name).toUtf8().data());
+		stmt->executeUpdate(QString("update users set madels_poknum=%1 where user_name='%2'\0").arg(tem_madels_poknum).arg(user_name).toUtf8().data());
 		madels_poknum = tem_madels_poknum;
 	}
 	if (tem_madels_pokh > madels_pokh) {
-		stmt->executeUpdate(QString("update users set madels_pokh=%1 where user_name=%2\0").arg(tem_madels_pokh).arg(user_name).toUtf8().data());
+		stmt->executeUpdate(QString("update users set madels_pokh=%1 where user_name='%2'\0").arg(tem_madels_pokh).arg(user_name).toUtf8().data());
 		madels_pokh = tem_madels_pokh;
 	}
 }
@@ -288,6 +288,7 @@ void Handler::get_string_from_socket(const QString & str)
 				emit string_to_socket_ready(QString("user %1 login success").arg(list.at(1)), 2);
 				emit string_to_socket_ready(QString("login****success****登录成功"), 1);
 				get_player_pokemons();
+				fresh_player_madels();
 				QString player_info = get_player_sql_info(user_name);
 				emit string_to_socket_ready(player_info, 1);//player_info
 				QString pokemon_str = QString::fromStdString(player.out_pokemon_info());

@@ -700,18 +700,18 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>30</y>
+          <y>0</y>
           <width>451</width>
-          <height>281</height>
+          <height>381</height>
          </rect>
         </property>
         <widget class="QLabel" name="label_source_pok_img">
          <property name="geometry">
           <rect>
-           <x>90</x>
-           <y>0</y>
-           <width>221</width>
-           <height>191</height>
+           <x>80</x>
+           <y>30</y>
+           <width>250</width>
+           <height>250</height>
           </rect>
          </property>
          <property name="text">
@@ -721,47 +721,8 @@
         <widget class="QLabel" name="label_source_pok_status">
          <property name="geometry">
           <rect>
-           <x>30</x>
-           <y>200</y>
-           <width>351</width>
-           <height>81</height>
-          </rect>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="widget_8" native="true">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>30</y>
-          <width>451</width>
-          <height>281</height>
-         </rect>
-        </property>
-        <widget class="QLabel" name="label_enemy_pok_img">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>0</y>
-           <width>221</width>
-           <height>191</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_enemy_pok_status">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>200</y>
+           <x>40</x>
+           <y>290</y>
            <width>351</width>
            <height>81</height>
           </rect>
@@ -778,9 +739,9 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>320</y>
+          <y>390</y>
           <width>861</width>
-          <height>241</height>
+          <height>171</height>
          </rect>
         </property>
         <property name="undoRedoEnabled">
@@ -789,6 +750,45 @@
         <property name="readOnly">
          <bool>true</bool>
         </property>
+       </widget>
+       <widget class="QWidget" name="widget_8" native="true">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>0</y>
+          <width>451</width>
+          <height>381</height>
+         </rect>
+        </property>
+        <widget class="QLabel" name="label_enemy_pok_img">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>30</y>
+           <width>250</width>
+           <height>250</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_enemy_pok_status">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>290</y>
+           <width>351</width>
+           <height>81</height>
+          </rect>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="page_send_pokemon">
@@ -803,7 +803,10 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_8">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_send_image1">
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -842,7 +845,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="label_send_image2">
            <property name="text">
             <string/>
            </property>
@@ -881,7 +884,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_10">
          <item>
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="label_send_image3">
            <property name="text">
             <string/>
            </property>

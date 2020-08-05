@@ -218,7 +218,13 @@ void Client::show_repo(const QStringList & list)
 	
 	ui.Text_battle_2->clear();
 	ui.Swidgt->setCurrentIndex(6);
-	for (int i = 0; i < list.size()-1; i++) {
+	QStringList attis = list.at(0).split("<>");
+	ui.label_source_pok_status->setText(attis.at(0));
+	ui.label_enemy_pok_status->setText(attis.at(1));
+	QStringList imgs = list.at(1).split(",");
+	ui.label_source_pok_img->setPixmap(QPixmap(QString(":/Image/%1.png").arg(imgs.at(0).toInt())).scaled(ui.label_source_pok_img->size()));
+	ui.label_enemy_pok_img->setPixmap(QPixmap(QString(":/Image/%1.png").arg(imgs.at(1).toInt())).scaled(ui.label_enemy_pok_img->size()));
+	for (int i = 2; i < list.size()-1; i++) {
 		
 		ui.Text_battle_2->append(list.at(i));
 		QTest::qWait(1500);
@@ -231,6 +237,9 @@ void Client::show_repo(const QStringList & list)
 		ui.label_send_pokemon1->clear();
 		ui.label_send_pokemon2->clear();
 		ui.label_send_pokemon3->clear();
+		ui.label_send_image1->clear();
+		ui.label_send_image2->clear();
+		ui.label_send_image3->clear();
 		QStringList send_three = list.at(list.size() - 1).split(",");
 		first_ = send_three[1].toInt();
 		second_ = send_three[2].toInt();
@@ -238,11 +247,21 @@ void Client::show_repo(const QStringList & list)
 		pokemon_base *pok1 = handler->player.find_pok_by_unique(first_);
 		pokemon_base *pok2 = handler->player.find_pok_by_unique(second_);
 		pokemon_base *pok3 = handler->player.find_pok_by_unique(third_);
-		if (pok1)ui.label_send_pokemon1->setText(QString::fromStdString(pok1->get_name_and_level()));
+		QSize send_label_size = QSize(239, 210);
+		if (pok1) {
+			ui.label_send_pokemon1->setText(QString::fromStdString(pok1->get_name_and_level()));
+			ui.label_send_image1->setPixmap(QPixmap( QString(":/Image/%1.png").arg(pok1->get_pokemon_id())).scaled(send_label_size));
+		}
 		else ui.Button_send_pokemon1->hide();
-		if (pok2)ui.label_send_pokemon2->setText(QString::fromStdString(pok2->get_name_and_level()));
+		if (pok2) {
+			ui.label_send_pokemon2->setText(QString::fromStdString(pok2->get_name_and_level()));
+			ui.label_send_image2->setPixmap(QPixmap(QString(":/Image/%1.png").arg(pok2->get_pokemon_id())).scaled(send_label_size));
+		}
 		else ui.Button_send_pokemon2->hide();
-		if (pok3)ui.label_send_pokemon3->setText(QString::fromStdString(pok3->get_name_and_level()));
+		if (pok3) {
+			ui.label_send_pokemon3->setText(QString::fromStdString(pok3->get_name_and_level()));
+			ui.label_send_image3->setPixmap(QPixmap(QString(":/Image/%1.png").arg(pok3->get_pokemon_id())).scaled(send_label_size));
+		}
 		else ui.Button_send_pokemon3->hide();
 		change_to_send_pok();
 		return;
