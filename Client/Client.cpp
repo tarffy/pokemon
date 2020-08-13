@@ -58,6 +58,9 @@ Client::Client(QWidget *parent)
 	connect(handler, &Handler::pokemon_info_ready, this, &Client::show_pokemon_info);
 	connect(ui.Button_pokemon_to_store, &QPushButton::clicked, this, &Client::put_pokemon_to_store);
 	connect(ui.Button_pokemon_to_bag, &QPushButton::clicked, this, &Client::put_pokemon_to_bag);
+	connect(ui.list_pokemon_bag, &QListWidget::currentRowChanged, this, &Client::show_pok_info_in_pokpage);
+	connect(ui.list_pokemon_store, &QListWidget::currentRowChanged, this, &Client::show_pok_info_in_pokpage);
+	
 	//抽奖页
 	connect(ui.Button_gacha, &QPushButton::clicked, this, &Client::change_to_gacha);
 	connect(ui.Button_return_menu4, &QPushButton::clicked, this, &Client::change_to_menu);
@@ -369,6 +372,23 @@ void Client::show_player_info(const QString & str)
 	}
 	label_test.append(madels);
 	ui.label_menu_info->setText(label_test);
+}
+
+void Client::show_pok_info_in_pokpage(int row)
+{
+	if (row == -1)return;
+	pokemon_base *now_;
+	if (sender() == ui.list_pokemon_bag) {
+		int unique = handler->player.get_unique_by_pos(row);
+		now_ = handler->player.find_pok_by_unique(unique);
+	}
+	else {
+		int unique = handler->player.get_unique_by_pos(row + 10);
+		now_ = handler->player.find_pok_by_unique(unique);
+	}
+	QString pok_info = QString::fromStdString(now_->out_status());
+	ui.label_pok_info->setText(pok_info);
+	ui.label_pok_image->setPixmap(QPixmap(QString(":/Image/%1.png").arg(now_->get_pokemon_id())).scaled(ui.label_pok_image->size()));
 }
 
 

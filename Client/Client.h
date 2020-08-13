@@ -52,4 +52,5 @@ public slots:
 	void try_send_pok();
 	void try_fresh_player();
 	void show_player_info(const QString &str);
+	void show_pok_info_in_pokpage(int row);
 };

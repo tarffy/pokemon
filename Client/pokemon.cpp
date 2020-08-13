@@ -63,15 +63,16 @@ string pokemon_base::out_status()
 	res.append("\n");
 	res.append("等级:"); res.append(to_string(levels[0]));
 	res.append(" 当前经验:"); res.append(to_string(levels[1]));
-	res.append("升级需要经验:"); res.append(to_string(levels[2]));
+	res.append(" 升级需要经验:"); res.append(to_string(levels[2]));
 	res.append("\n");
 	res.append("HP:"); res.append(to_string(attributes[0]));
-	res.append("攻击:"); res.append(to_string(attributes[1]));
-	res.append("防御:"); res.append(to_string(attributes[2]));
+	res.append(" 攻击:"); res.append(to_string(attributes[1]));
+	res.append(" 防御:"); res.append(to_string(attributes[2]));
+	res.append("\n");
 	res.append("速度:"); res.append(to_string(attributes[3]));
-	res.append("暴击率:"); res.append(to_string(attributes[4]));
+	res.append(" 暴击率:"); res.append(to_string(attributes[4]));
 	res.append("%");
-	res.append("闪避率:"); res.append(to_string(attributes[5]));
+	res.append(" 闪避率:"); res.append(to_string(attributes[5]));
 	res.append("%\n");
 	return res;
 }

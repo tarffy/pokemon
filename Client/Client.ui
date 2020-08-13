@@ -548,6 +548,32 @@
          <string>返回菜单</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_pok_info">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>400</y>
+          <width>291</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_pok_image">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>190</y>
+          <width>239</width>
+          <height>210</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_gacha">
        <widget class="QPushButton" name="Button_return_menu4">
