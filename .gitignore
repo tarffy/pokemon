@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Server/mysqlcppconn-7-vs14.dll
+/Client/Image
