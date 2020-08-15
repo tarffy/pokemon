@@ -17,6 +17,8 @@ Client::Client(QWidget *parent)
 	}
 	connect(socket, &QTcpSocket::readyRead, this, &Client::read_from_socket);
 
+	set_palettes();
+
 	handler = new Handler();
 	connect(this, &Client::socket_to_handler_ready, handler, &Handler::handle_str_from_socket);
 	connect(handler, &Handler::register_or_login_success, this,&Client::register_or_login_success_slot);
@@ -424,6 +426,49 @@ void Client::try_register()
 	handler->player.set_user_name(user_name.toStdString());
 	QString res = QString("register****%1****%2").arg(user_name).arg(password);
 	socket->write(res.toUtf8());
+}
+
+void Client::set_palettes()
+{
+	QSize back_size = QSize(938, 578);
+	QSize gacha_size=QSize(911, 486);
+	QPalette palette;
+
+	
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/back1.png").scaled(back_size)));
+	ui.page_login->setAutoFillBackground(true);
+	ui.page_login->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/back2.png").scaled(back_size)));
+	ui.page_menu->setAutoFillBackground(true);
+	ui.page_menu->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/back3.jpg").scaled(back_size)));
+	ui.page_send_pokemon->setAutoFillBackground(true);
+	ui.page_send_pokemon->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/back4.png").scaled(back_size)));
+	ui.page_battle->setAutoFillBackground(true);
+	ui.page_battle->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/back5.jpg").scaled(back_size)));
+	ui.page_pokemons->setAutoFillBackground(true);
+	ui.page_pokemons->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/gacha1.png").scaled(gacha_size)));
+	ui.tab->setAutoFillBackground(true);
+	ui.tab->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/gacha2.png").scaled(gacha_size)));
+	ui.tab_2->setAutoFillBackground(true);
+	ui.tab_2->setPalette(palette);
+
+	palette.setBrush(backgroundRole(), QBrush(QPixmap(":/Image/white.png").scaled(ui.label_menu_info->size())));
+	ui.label_menu_info->setAutoFillBackground(true);
+	ui.label_menu_info->setPalette(palette);
+	ui.label_tips->setAutoFillBackground(true);
+	ui.label_tips->setPalette(palette);
 }
 
 void Client::try_query_pokemon_info()

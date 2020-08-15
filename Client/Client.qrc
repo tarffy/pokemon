@@ -3,5 +3,22 @@
         <file>Image/1.png</file>
         <file>Image/2.png</file>
         <file>Image/3.png</file>
+        <file>Image/002Ivysaur.png</file>
+        <file>Image/005Charmeleon.png</file>
+        <file>Image/008Wartortle.png</file>
+        <file>Image/900px-001Bulbasaur.png</file>
+        <file>Image/900px-003Venusaur.png</file>
+        <file>Image/900px-004Charmander.png</file>
+        <file>Image/900px-006Charizard.png</file>
+        <file>Image/900px-007Squirtle.png</file>
+        <file>Image/900px-009Blastoise.png</file>
+        <file>Image/back1.png</file>
+        <file>Image/gacha1.png</file>
+        <file>Image/gacha2.png</file>
+        <file>Image/back2.png</file>
+        <file>Image/white.png</file>
+        <file>Image/back3.jpg</file>
+        <file>Image/back4.png</file>
+        <file>Image/back5.jpg</file>
     </qresource>
 </RCC>

@@ -21,6 +21,7 @@ private:
 	int first_, second_, third_;
 	int battle_num, battle_win;
 	vector<bool> madels;
+	void set_palettes();
 public:
 	void try_query_pokemon_info();
 signals:
