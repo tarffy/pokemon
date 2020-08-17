@@ -127,9 +127,14 @@ void Handler::database_init()
 	skill_status_database[11] = "因为极寒受到了%1点伤害\n";
 	skill_status_database[21] = "因为中毒受到了%1点伤害\n";
 
-	pok_names[1] = "巴鲁斯";
-	pok_names[2] = "火爆猴";
-	pok_names[3] = "步步种子";
+	pok_names[1] = "杰尼龟";
+	pok_names[2] = "小火龙";
+	pok_names[3] = "妙蛙种子";
+	pok_names[4] = "胖丁";
+	pok_names[5] = "球球海狮";
+	pok_names[6] = "火斑喵";
+	pok_names[7] = "木木枭";
+	pok_names[8] = "小笃儿";
 	//pok_names[] = "";
 }
 
