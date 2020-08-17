@@ -6,7 +6,7 @@ Client::Client(QWidget *parent)
 {
     ui.setupUi(this);
 	socket = new QTcpSocket(this);
-	socket->connectToHost(QHostAddress::LocalHost, 8888);//"188.131.139.250" QHostAddress::LocalHost
+	socket->connectToHost(QHostAddress::LocalHost, 8888);//"62.234.142.180"  QHostAddress::LocalHost
 	if (socket->waitForConnected()) {
 		qDebug()<< "TCP connected";
 	}

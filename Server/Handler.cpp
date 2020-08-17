@@ -141,8 +141,8 @@ void Handler::server_handler()
 	stmt->execute("delete from pokemon_user where user_name ='AFMowqmt1ga21'");
 	//stmt->execute("update users set next_unique = 0 where user_name='AFMowqmt1ga21'");
 	player.set_next_unique(0);
-	for (int i = 0; i < 20; ++i) {
-		give_player_random_r(a,i%3);
+	for (int i = 0; i < 30; ++i) {
+		give_player_random_r(a,i%8);
 	}
 	get_player_pokemons();
 	player.server_handle();
