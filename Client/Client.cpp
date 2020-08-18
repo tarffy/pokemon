@@ -104,10 +104,6 @@ void Client::show_query_player_result(const QString & str)
 void Client::change_to_pokemon()
 {
 	ui.Swidgt->setCurrentIndex(4);
-	/*if (get_pokemon) {
-		get_pokemon = 0;
-		try_query_pokemon_info();
-	}*/
 }
 
 void Client::change_to_gacha()

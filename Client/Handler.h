@@ -7,7 +7,7 @@ class Handler : public QObject
 {
 	Q_OBJECT	
 private:
-
+	void database_init();
 public:
 	Handler(QObject *parent=NULL);
 	Player player;
@@ -17,7 +17,6 @@ public:
 	unordered_map<int, pair<QString, QString> >skill_database;
 	unordered_map<int,  QString >skill_status_database;
 	unordered_map<int, QString >pok_names;
-	void database_init();
 public slots:
 	void handle_str_from_socket(const QString &str);		//处理socket读到的string
 signals:

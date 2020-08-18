@@ -7,6 +7,7 @@
 using std::pair;
 using std::unordered_map;
 class pokemon_base {
+private:
 	string pokemon_name;
 	int skill_num;
 	int unique_id,pokemon_id;
@@ -16,6 +17,15 @@ class pokemon_base {
 	unordered_map<int, vector<int>> status;	//int id 0id 1剩余持续时间 23技能效果
 	vector<skill_base*> skills;		//技能
 	string repo;					//一个精灵战斗时用于保存战斗过程信息
+	string status_fresh();		//战斗录像 详细信息见文档
+	inline bool get_true_at_rate(double rate);
+	inline bool get_true_at_rate(int rate100);
+	inline double get_rand() { return rand() % 1001 * 1.0 / 1000; }
+	string attack_turn(pokemon_base *enemy);//战斗双方其中一方的回合	
+	void atti_reset() { attributes_z = attributes; status.clear(); }//战斗前将状态重置
+	string get_exp(int exp);	//获取经验 升级会调用level_up
+	virtual string use_skills(pokemon_base *enemy) { return ""; }
+	void skill_cd_reset();		//战斗开始时重置所有技能冷却时间
 public:
 	vector<bool> need_update;	//0位置 1经验等级 234技能
 	pokemon_base() { unique_id = -1; }
@@ -27,21 +37,11 @@ public:
 		need_update.resize(5);//0位置 
 		for (int i = 0; i < need_update.size(); ++i)need_update[i] = false;
 	};
-	string status_fresh();		//战斗录像 详细信息见文档
-	inline bool get_true_at_rate(double rate);
-	inline bool get_true_at_rate(int rate100);
-	inline double get_rand() { return rand() % 1001 * 1.0 / 1000; }
-	string battle_with(pokemon_base *enemy);	//开始一场酣畅淋漓的战斗
-	string attack_turn(pokemon_base *enemy);//战斗双方其中一方的回合	
-	void atti_reset() { attributes_z = attributes; status.clear(); }//战斗前将状态重置
-	string get_exp(int exp);	//获取经验 升级会调用level_up
-	void level_up(int num=1);		//升级 属性增长
-	virtual string use_skills(pokemon_base *enemy) { return ""; }
-	virtual void set_skill(int cur, int id, string name, string descrip, vector<int> skill_args);	//将第几个技能设置为后面的信息
 	string out_pokemon_info();	//将精灵信息输出成字符串用于socket通信
-	void skill_cd_reset();		//战斗开始时重置所有技能冷却时间
-
+	string battle_with(pokemon_base *enemy);	//开始一场酣畅淋漓的战斗
+	void level_up(int num = 1);		//升级 属性增长
 	//get and set
+	virtual void set_skill(int cur, int id, string name, string descrip, vector<int> skill_args);	//将第几个技能设置为后面的信息
 	string get_name() { return pokemon_name; }
 	string &get_repo() { return repo; }
 	void set_name(const string &name) { pokemon_name = name; }

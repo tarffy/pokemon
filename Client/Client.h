@@ -16,12 +16,11 @@ private:
     Ui::ClientClass ui;
 	QTcpSocket *socket;
 	Handler *handler;
-	int get_pokemon = 1;
 	QString user_name;
-	int first_, second_, third_;
-	int battle_num, battle_win;
-	vector<bool> madels;
-	void set_palettes();
+	int first_, second_, third_;		//保存送出精灵的信息 好像是unique_id
+	int battle_num, battle_win;			//战斗数量 战胜数量
+	vector<bool> madels;	//该用户拥有的奖牌信息
+	void set_palettes();	//设置背景
 public:
 	void try_query_pokemon_info();
 signals:

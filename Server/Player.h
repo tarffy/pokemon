@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "pokemon.h"
 class Player {
+private:
 	string user_name;
 	vector<pokemon_base *> pokemon_bag;	//放在背包中的精灵
 	vector<pokemon_base *> pokemon_store;//放在仓库中的精灵 精灵只存在于一处
