@@ -27,11 +27,8 @@ public:
 		pokemon_id = id[1];
 	};
 	string out_status();
-
 	void gain_exp(int expa);	//获取经验 升级会调用level_up
 	void level_up();		//升级 属性增长 可能会调用involve
-
-
 	virtual string use_skills(pokemon_base *enemy) { return ""; }
 
 	virtual void set_skill(int cur, int id, string name, string descrip, vector<int> skill_args);

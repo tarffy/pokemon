@@ -235,7 +235,7 @@ void Client::show_repo(const QStringList & list)
 	for (int i = 2; i < list.size()-1; i++) {
 		
 		ui.Text_battle_2->append(list.at(i));
-		QTest::qWait(1500);
+		QTest::qWait(2000);
 	}
 	QTest::qWait(2000);
 	if (list.at(list.size() - 1)[0] == '1') {

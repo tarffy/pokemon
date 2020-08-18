@@ -141,7 +141,7 @@ void Handler::server_handler()
 	stmt->execute("delete from pokemon_user where user_name ='AFMowqmt1ga21'");
 	//stmt->execute("update users set next_unique = 0 where user_name='AFMowqmt1ga21'");
 	player.set_next_unique(0);
-	for (int i = 0; i < 30; ++i) {
+	for (int i = 0; i < 40; ++i) {
 		give_player_random_r(a,i%8);
 	}
 	get_player_pokemons();
@@ -358,6 +358,8 @@ void Handler::get_string_from_socket(const QString & str)
 			query_res.append(QString("lv.%1,%2").arg(res->getInt("level")).arg(res->getInt("id_unique")));
 		}
 		if (flag)query_res.append("-1");
+		QString win_madel = get_player_sql_info(list.at(1));
+		query_res.append("****" + win_madel);
 		emit string_to_socket_ready(query_res, 1);
 		emit string_to_socket_ready(QString("%1 query %2 success").arg(user_name).arg(list.at(1)), 2);
 	}

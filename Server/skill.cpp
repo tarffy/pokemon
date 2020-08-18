@@ -86,7 +86,7 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 	}
 	case 4: {//持续debuff
 		int defence_descease = int(1.0*skill_args[3] / 100 * enemy_atti[2]);
-		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]/4);
 		enemy_atti_z[2] -= defence_descease;
 		status_args2 = vector<int>{ this->get_id(),skill_args[0],demage,defence_descease };
 		status_add_flag2 = 1;
@@ -114,7 +114,7 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 	}
 	case 11: {//持续debuff
 		int attack_descease = int(1.0*skill_args[3] / 100 * enemy_atti[1]);
-		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]/100);
 		enemy_atti_z[1] -= attack_descease;
 		status_args2 = vector<int>{ this->get_id(),skill_args[0],demage,attack_descease };
 		status_add_flag2 = 1;
@@ -144,7 +144,7 @@ int skill_base::skill_use(pokemon_base * source, pokemon_base * enemy)
 	}
 	case 21: {//持续debuff
 		int speed_descease = int(1.0*skill_args[3] / 100 * enemy_atti[3]);
-		int demage = int(1.0*enemy_atti[0] * skill_args[2]);
+		int demage = int(1.0*enemy_atti[0] * skill_args[2]/100);
 		enemy_atti_z[3] -= speed_descease;
 		status_args2 = vector<int>{ this->get_id(),skill_args[0],demage,speed_descease };
 		status_add_flag2 = 1;

@@ -1216,9 +1216,9 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>390</y>
+          <y>380</y>
           <width>861</width>
-          <height>171</height>
+          <height>181</height>
          </rect>
         </property>
         <property name="undoRedoEnabled">

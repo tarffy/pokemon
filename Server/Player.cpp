@@ -143,7 +143,7 @@ pokemon_base * Player::find_pok_by_unique(int id)
 
 void Player::server_handle()
 {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 40; i++) {
 		pokemon_store[i]->level_up(rand() % 15);
 		pokemon_store[i]->need_update[1] = 1;
 
