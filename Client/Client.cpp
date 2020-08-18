@@ -53,6 +53,8 @@ Client::Client(QWidget *parent)
 	connect(handler, &Handler::query_success, this, &Client::show_query_player_result);
 	connect(ui.Button_query_player_pokemon, &QPushButton::clicked, this, &Client::try_query_player_pokemon);
 	connect(handler, &Handler::player_pokemon_ready, this, &Client::show_query_player_pokemon);
+	connect(ui.Button_query_all_pokemon, &QPushButton::clicked, this, &Client::try_query_all_pokemon);
+	connect(handler, &Handler::query_all_pokemon_ready, this, &Client::show_all_pokemon);
 	//精灵页
 	connect(ui.Button_pokemons, &QPushButton::clicked, this, &Client::change_to_pokemon);
 	connect(ui.Button_return_menu3, &QPushButton::clicked, this, &Client::change_to_menu);
@@ -67,6 +69,7 @@ Client::Client(QWidget *parent)
 	connect(ui.Button_gacha, &QPushButton::clicked, this, &Client::change_to_gacha);
 	connect(ui.Button_return_menu4, &QPushButton::clicked, this, &Client::change_to_menu);
 	connect(ui.Button_gacha1_1, &QPushButton::clicked, this, &Client::try_gacha);
+	connect(ui.Button_gacha1_5, &QPushButton::clicked, this, &Client::try_gacha);
 }
 
 void Client::change_to_battle()
@@ -205,7 +208,7 @@ void Client::show_query_player_pokemon(const QStringList &list)
 		return;
 	}
 	QStringList pok_list = str.split("###");
-	for (int i = 0; i < list.size(); i++) {
+	for (int i = 0; i < pok_list.size(); i++) {
 		ui.list_player_pokemon->addItem(pok_list[i].split(",").at(0));
 	}
 }
@@ -391,6 +394,25 @@ void Client::show_pok_info_in_pokpage(int row)
 	QString pok_info = QString::fromStdString(now_->out_status());
 	ui.label_pok_info->setText(pok_info);
 	ui.label_pok_image->setPixmap(QPixmap(QString(":/Image/%1.png").arg(now_->get_pokemon_id())).scaled(ui.label_pok_image->size()));
+}
+
+void Client::try_query_all_pokemon()
+{
+	QString str = QString("query_all_pokemon****");
+	socket->write(str.toUtf8());
+}
+
+void Client::show_all_pokemon(const QString & str)
+{
+	QStringList players = str.split("###");
+	ui.list_player_pokemon->clear();
+	for (auto &it : players) {
+		QStringList poks = it.split("$$");
+		ui.list_player_pokemon->addItem(QString("用户名：%1").arg(poks.at(0)));
+		for (int i = 1; i < poks.size() - 1; i++) {
+			ui.list_player_pokemon->addItem(poks.at(i));
+		}
+	}
 }
 
 

@@ -30,4 +30,5 @@ signals:
 	void repo_ready(const QStringList &list);
 	void enemy_list_ready(const QStringList &list);
 	void player_info_ready(const QString &str);
+	void query_all_pokemon_ready(const QString &str);
 };

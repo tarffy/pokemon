@@ -54,4 +54,6 @@ public slots:
 	void try_fresh_player();
 	void show_player_info(const QString &str);
 	void show_pok_info_in_pokpage(int row);
+	void try_query_all_pokemon();
+	void show_all_pokemon(const QString &list);
 };

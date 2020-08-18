@@ -183,6 +183,9 @@ void Handler::handle_str_from_socket(const QString & str)
 		else if (mode=="query_player_pokemon") {//精灵以###隔开 名字登记,unique id
 			emit player_pokemon_ready(list);
 		}
+		else if (mode == "query_all_pokemon") {
+			emit query_all_pokemon_ready(list.at(1));
+		}
 		else if (mode == "add_pokemon") {
 			player.put_pokemon_in_store(string_to_pokemon(list.at(1)));
 			QString names = QString::fromStdString(player.get_all_names());

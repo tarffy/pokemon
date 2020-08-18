@@ -19,7 +19,6 @@ public:
 	void fresh_pokemon_pos(const vector<int>&bag, const vector<int>&store);
 	unordered_map<int,string > get_sql_update_info();
 	int get_store_num() { return store_count; }
-	string battle_test();
 	void get_pokemon_update_string(pokemon_base*pok, string &res,int i);
 	pokemon_base *find_pok_by_unique(int id);
 	void server_handle();

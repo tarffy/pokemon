@@ -246,7 +246,7 @@ void Handler::update_sql_battle_num(int win_flag)
 {
 	battle_num++;
 	battle_win += win_flag;
-	stmt->executeUpdate(QString("update users set battle_num=%1,battle_win=%2\0").arg(battle_num).arg(battle_win).toUtf8().data());
+	stmt->executeUpdate(QString("update users set battle_num=%1,battle_win=%2 where user_name='%3'\0").arg(battle_num).arg(battle_win).arg(user_name).toUtf8().data());
 }
 
 void Handler::fresh_player_madels()
@@ -358,10 +358,30 @@ void Handler::get_string_from_socket(const QString & str)
 			query_res.append(QString("lv.%1,%2").arg(res->getInt("level")).arg(res->getInt("id_unique")));
 		}
 		if (flag)query_res.append("-1");
-		QString win_madel = get_player_sql_info(list.at(1));
-		query_res.append("****" + win_madel);
 		emit string_to_socket_ready(query_res, 1);
 		emit string_to_socket_ready(QString("%1 query %2 success").arg(user_name).arg(list.at(1)), 2);
+	}
+	else if (mode == "query_all_pokemon") {
+		QString str_res="query_all_pokemon****";
+		res = stmt->executeQuery(QString("select user_name,pokemon_name,level from pokemon_user where user_name!='AFMowqmt1ga21' \0").toUtf8().data());
+		QString last_user_name="-1";
+		while (res->next())
+		{
+			QString tem_name = QString::fromStdString(res->getString("user_name").c_str());
+			if (last_user_name == "-1") {
+				str_res.append(tem_name+"$$");
+				last_user_name = tem_name;
+			}
+			else if (last_user_name != tem_name) {
+				last_user_name = tem_name;
+				str_res.append("-1###" + tem_name+"$$");
+			}
+			QString pok_name= QString::fromStdString(res->getString("pokemon_name").c_str());
+			int level = res->getInt("level");
+			str_res.append(QString("%1 lv.%2$$").arg(pok_name).arg(level));
+		}
+		str_res.append("-1");
+		emit string_to_socket_ready(str_res, 1);
 	}
 	else if (mode == "gacha") {
 		QStringList gacha_list = list.at(1).split("###");
@@ -423,7 +443,7 @@ void Handler::get_string_from_socket(const QString & str)
 				str += "****1";
 			}
 			else {
-				vector<int> &three_unique = player.three_unique_id();
+				vector<int> three_unique = player.three_unique_id();
 				str += QString("****%1,%2,%3").arg(three_unique[0]).arg(three_unique[1]).arg(three_unique[2]);
 				if (three_unique[1] == -1) {
 					no_pokemon = 1;

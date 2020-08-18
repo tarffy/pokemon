@@ -374,43 +374,6 @@ string pokemon_base::attack_turn(pokemon_base * enemy)
 	return skill_used + status_str + demage_str;
 }
 
-void pokemon_base::out_status()
-{
-
-	
-	string type, _class;
-	switch (attributes[6])
-	{
-	case 0:type = "水属性"; break;
-	case 1:type = "火属性"; break;
-	case 2:type = "草属性"; break;
-	case 3:type = "普通属性"; break;
-	}
-	switch (attributes[7])
-	{
-	case 0:_class = "肉盾型"; break;
-	case 1:_class = "力量型"; break;
-	case 2:_class = "防御型"; break;
-	case 3:_class = "敏捷型"; break;
-	}
-	
-	cout << "Name:" << pokemon_name <<type<<" "<<_class <<endl;
-	cout << "Level: " << levels[0] << " Exp_now: " << levels[1] << " Exp_levelup: " << levels[2] << endl;
-	cout << "Attributes: HP:" << attributes[0] << " Attack: " << attributes[1] << " Defence: " << attributes[2]
-		<< " Speed: " << attributes[3] << " Critical: " << attributes[4] << " Miss: " << attributes[5] << endl;
-	cout << "Attributes: HP:" << attributes_z[0] << " Attack: " << attributes_z[1] << " Defence: " << attributes_z[2]
-		<< " Speed: " << attributes_z[3] << " Critical: " << attributes_z[4] << " Miss: " << attributes_z[5] << endl;
-		
-
-}
-
-void pokemon_base::out_z_status()
-{	
-	cout << "Name:" << pokemon_name << endl;
-	cout << "Attributes: HP:" << attributes_z[0] << " Attack: " << attributes_z[1] << " Defence: " << attributes_z[2]
-		<< " Speed: " << attributes_z[3] << " Critical: " << attributes_z[4] << " Miss: " << attributes_z[5] << endl;
-		
-}
 
 string pokemon_base::get_exp(int exp)
 {

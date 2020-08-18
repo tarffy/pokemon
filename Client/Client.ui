@@ -720,7 +720,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>60</width>
+               <width>40</width>
                <height>20</height>
               </size>
              </property>
@@ -780,6 +780,19 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QPushButton" name="Button_query_all_pokemon">
+                <property name="minimumSize">
+                 <size>
+                  <width>178</width>
+                  <height>110</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>查看所有注册用户精灵</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -793,7 +806,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>60</width>
+               <width>40</width>
                <height>20</height>
               </size>
              </property>
@@ -1013,77 +1026,6 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tab">
-           <attribute name="title">
-            <string>火舞之人</string>
-           </attribute>
-           <widget class="QWidget" name="widget_5" native="true">
-            <property name="geometry">
-             <rect>
-              <x>110</x>
-              <y>380</y>
-              <width>681</width>
-              <height>101</height>
-             </rect>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QPushButton" name="Button_gacha1_1">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>单抽</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="Button_gacha1_2">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>十连</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
             <string>往日幻象</string>
@@ -1135,6 +1077,77 @@
              </item>
              <item>
               <widget class="QPushButton" name="Button_gacha1_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>十连</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab">
+           <attribute name="title">
+            <string>火舞之人</string>
+           </attribute>
+           <widget class="QWidget" name="widget_5" native="true">
+            <property name="geometry">
+             <rect>
+              <x>110</x>
+              <y>380</y>
+              <width>681</width>
+              <height>101</height>
+             </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QPushButton" name="Button_gacha1_1">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>单抽</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="Button_gacha1_2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
                  <horstretch>0</horstretch>
