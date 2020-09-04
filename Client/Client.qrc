@@ -16,5 +16,6 @@
         <file>Image/gacha1.png</file>
         <file>Image/gacha2.png</file>
         <file>Image/white.png</file>
+        <file>Image/icon.png</file>
     </qresource>
 </RCC>

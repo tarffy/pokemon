@@ -29,7 +29,11 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Client</string>
+   <string>宠物小精灵</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Client.qrc">
+    <normaloff>:/Image/icon.png</normaloff>:/Image/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
