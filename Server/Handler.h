@@ -22,7 +22,7 @@ private:
 	sql::ResultSet *res2;					//结果集
 	Player player;
 	int no_pokemon = 0;
-	int battle_num, battle_win;
+	int battle_num=0, battle_win=0;
 	int madels_poknum, madels_pokh;
 	void put_three_pokemons_in_bag();	//注册成功时调用
 	void get_player_pokemons();			//登录成功后从SQL获取用户的精灵信息
